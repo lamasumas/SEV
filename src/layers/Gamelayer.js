@@ -10,11 +10,11 @@ class GameLayer extends Layer {
        // this.espacio = new Espacio(1);
         this.scrollX = 0;
         this.fondo = new Fondo(imagenes.fondo, 480 * 0.5, 320 * 0.5);
-        this.jugador = new Jugador(100,100);
-        this.espacios = new Espacio(0)
-        this.espacios.agregarCuerpoDinamico(this.jugador)
+        this.jugador ;
+        this.espacios = new Espacio(0);
+        this.mapaEsquema;
 
-        //this.cargarMapa("res/"+nivelActual+".txt");
+        this.cargarMapa("res/"+nivelActual+".txt");
     }
 
 
@@ -43,49 +43,6 @@ class GameLayer extends Layer {
 
     }
 
-/*
-    procesarControles() {
-        if (controles.continuar){
-            controles.continuar = false;
-            this.pausa = false;
-        }
-
-        // disparar
-        if (controles.disparo) {
-            var nuevoDisparo = this.jugador.disparar();
-            if (nuevoDisparo != null) {
-                this.espacio.agregarCuerpoDinamico(nuevoDisparo);
-                this.disparosJugador.push(nuevoDisparo);
-
-            }
-
-
-        }
-
-        // Eje X
-        if (controles.moverX > 0) {
-            this.jugador.moverX(1);
-
-        } else if (controles.moverX < 0) {
-            this.jugador.moverX(-1);
-
-        } else {
-            this.jugador.moverX(0);
-        }
-
-        // Eje Y
-        if (controles.moverY > 0) {
-            this.jugador.saltar();
-
-        } else if (controles.moverY < 0) {
-
-
-        } else {
-
-        }
-
-    }
-
 
     cargarMapa(ruta) {
         var fichero = new XMLHttpRequest();
@@ -95,6 +52,9 @@ class GameLayer extends Layer {
             var texto = fichero.responseText;
             var lineas = texto.split('\n');
             this.anchoMapa = (lineas[0].length-1) * 40;
+            this.mapaEsquema= new Array(lineas.length + 1);
+            for (var i = 0; i< this.mapaEsquema.length; i++)
+                this.mapaEsquema[i] = new Array(Math.floor((this.anchoMapa/32)+1)).fill(0);
             for (var i = 0; i < lineas.length; i++) {
                 var linea = lineas[i];
                 for (var j = 0; j < linea.length; j++) {
@@ -111,35 +71,22 @@ class GameLayer extends Layer {
 
     cargarObjetoMapa(simbolo, x, y) {
         switch(simbolo) {
-            case "E":
-                var enemigo = new Enemigo(x,y);
-                enemigo.y = enemigo.y - enemigo.alto/2;
-                // modificación para empezar a contar desde el suelo
-                this.enemigos.push(enemigo);
-                this.espacio.agregarCuerpoDinamico(enemigo);
-                break;
+
             case "1":
                 this.jugador = new Jugador(x, y);
                 // modificación para empezar a contar desde el suelo
-                this.jugador.y = this.jugador.y - this.jugador.alto/2;
-                this.espacio.agregarCuerpoDinamico(this.jugador);
-                break;
-            case "#":
-                var bloque = new Bloque(imagenes.bloque_tierra, x,y);
-                bloque.y = bloque.y - bloque.alto/2;
-                // modificación para empezar a contar desde el suelo
-                this.bloques.push(bloque);
-                this.espacio.agregarCuerpoEstatico(bloque);
-                break;
-            case "C":
-                this.copa = new Bloque(imagenes.copa, x,y);
-                this.copa.y = this.copa.y - this.copa.alto/2;
-                // modificación para empezar a contar desde el suelo
-                this.espacio.agregarCuerpoDinamico(this.copa);
+                this.jugador.y = this.jugador.y - this.jugador.alto / 2;
+                var tempI = Math.floor(y / 32);
+                var tempJ = Math.floor(x / 32)
+                this.mapaEsquema[tempI][tempJ] = "P";
+                this.printMapa();
+                console.log(this.mapaEsquema)
+
+                this.espacios.agregarCuerpoDinamico(this.jugador);
                 break;
         }
     }
-*/
+
     calcularScroll() {
         // limite izquierda
         if (this.jugador.x > 480 * 0.3) {
@@ -158,6 +105,20 @@ class GameLayer extends Layer {
         }
 
 
+    }
+    printMapa(){
+        var theMapa = ""
+        for(var i = 0; i < this.mapaEsquema.length; i++)
+        {
+            var linea ="";
+            for(var j=0; j< this.mapaEsquema[i].length; j++ )
+            {
+                linea += "\t"+this.mapaEsquema[i][j]
+            }
+            theMapa += linea + "\n";
+            linea = ""
+        }
+        console.log(theMapa);
     }
 
 }
