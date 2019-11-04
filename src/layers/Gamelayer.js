@@ -20,6 +20,7 @@ class GameLayer extends Layer {
 
     actualizar (){
         this.calcularScroll();
+        this.updateMap();
         if (this.pausa){
             return;
         }
@@ -52,6 +53,7 @@ class GameLayer extends Layer {
             var texto = fichero.responseText;
             var lineas = texto.split('\n');
             this.anchoMapa = (lineas[0].length-1) * 40;
+            this.altoMapa = lineas.length;
             this.mapaEsquema= new Array(lineas.length + 1);
             for (var i = 0; i< this.mapaEsquema.length; i++)
                 this.mapaEsquema[i] = new Array(Math.floor((this.anchoMapa/32)+1)).fill(0);
@@ -75,12 +77,8 @@ class GameLayer extends Layer {
             case "1":
                 this.jugador = new Jugador(x, y);
                 // modificación para empezar a contar desde el suelo
-                this.jugador.y = this.jugador.y - this.jugador.alto / 2;
-                var tempI = Math.floor(y / 32);
-                var tempJ = Math.floor(x / 32)
-                this.mapaEsquema[tempI][tempJ] = "P";
-                this.printMapa();
-                console.log(this.mapaEsquema)
+                //this.jugador.y = this.jugador.y - this.jugador.alto / 2;
+
 
                 this.espacios.agregarCuerpoDinamico(this.jugador);
                 break;
@@ -119,6 +117,19 @@ class GameLayer extends Layer {
             linea = ""
         }
         console.log(theMapa);
+    }
+
+
+    updateMap() {
+        this.mapaEsquema = new Array(this.altoMapa + 1);
+        for (var i = 0; i < this.mapaEsquema.length; i++)
+            this.mapaEsquema[i] = new Array(Math.floor((this.anchoMapa / 32) + 1)).fill(0);
+        this.espacios.getDinamicos().forEach(dinamico => {
+            var tempI = Math.floor(dinamico.y / 32);
+            var tempJ = Math.floor(dinamico.x / 32)
+            this.mapaEsquema[tempI][tempJ] = dinamico.mapType;
+        });
+        this.printMapa();
     }
 
 }

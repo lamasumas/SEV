@@ -4,6 +4,7 @@ class Jugador extends Modelo {
         super(imagenes.jugador , x, y)
         this.vidas = 3;
         this.tiempoInvulnerable = 0;
+        this.mapType = "P"
 
 
         this.estado = estados.moviendo;
