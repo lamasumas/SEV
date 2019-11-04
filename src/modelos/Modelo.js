@@ -7,7 +7,6 @@ class Modelo {
         this.y = y;
         this.ancho = this.imagen.width;
         this.alto = this.imagen.height;
-        this.mapType = 0;
     }
 
     estaEnPantalla (){
