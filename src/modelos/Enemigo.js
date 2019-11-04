@@ -2,7 +2,7 @@ class Enemigo extends Modelo {
 
     constructor(x, y) {
         super(imagenes.enemigo, x, y)
-        this.vxInteligencia = -1;
+        this.vxInteligencia = 0;
         this.vx = this.vxInteligencia;
         this.mapType = "E"
         this.estado = estados.moviendo;
@@ -13,7 +13,7 @@ class Enemigo extends Modelo {
         this.animacion = this.aMover;
 
         this.vy = 0;
-        this.vx = 1;
+        this.vx = 0;
     }
 
 
