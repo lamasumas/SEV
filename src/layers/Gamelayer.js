@@ -13,6 +13,7 @@ class GameLayer extends Layer {
         this.jugador ;
         this.espacios = new Espacio(0);
         this.mapaEsquema;
+        this.enemigos = []
 
         this.cargarMapa("res/"+nivelActual+".txt");
     }
@@ -30,6 +31,7 @@ class GameLayer extends Layer {
       //  this.espacio.actualizar();
         this.fondo.vx = -1;
         this.jugador.actualizar()
+        this.enemigos.forEach(theEnemigo => theEnemigo.actualizar());
 
     }
 
@@ -39,7 +41,7 @@ class GameLayer extends Layer {
         //this.calcularScroll();
         this.fondo.dibujar();
         this.jugador.dibujar(this.scrollX);
-
+        this.enemigos.forEach(theEnemigo => theEnemigo.dibujar(this.scrollX));
 
 
     }
@@ -82,6 +84,10 @@ class GameLayer extends Layer {
 
                 this.espacios.agregarCuerpoDinamico(this.jugador);
                 break;
+            case "E":
+                var enemigo = new Enemigo(x,y);
+                this.enemigos.push(enemigo);
+                this.espacios.agregarCuerpoDinamico(enemigo);
         }
     }
 

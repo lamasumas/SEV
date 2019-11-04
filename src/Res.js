@@ -10,6 +10,9 @@ var imagenes = {
     jugador_disparando_izquierda : "res/jugador_disparando_izquierda.png",
     jugador_saltando_derecha : "res/jugador_saltando_derecha.png",
     jugador_saltando_izquierda : "res/jugador_saltando_izquierda.png",
+    enemigo : "res/enemigo.png",
+    enemigo_movimiento : "res/enemigo_movimiento.png",
+    enemigo_morir : "res/enemigo_morir.png",
 
 };
 
