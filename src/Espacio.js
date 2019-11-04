@@ -237,4 +237,8 @@ class Espacio {
         }
     }
 
+    getDinamicos(){
+        return this.dinamicos;
+    }
+
 }

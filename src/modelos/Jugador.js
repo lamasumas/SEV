@@ -2,8 +2,6 @@ class Jugador extends Modelo {
 
     constructor(x, y) {
         super(imagenes.jugador , x, y)
-        this.vidas = 3;
-        this.tiempoInvulnerable = 0;
 
 
         this.estado = estados.moviendo;
@@ -12,6 +10,7 @@ class Jugador extends Modelo {
 
         this.vx = 0; // velocidadX
         this.vy = 0; // velocidadY
+        this.mapType = "P";
 
 
         // Animaciones
