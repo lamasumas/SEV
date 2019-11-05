@@ -1,12 +1,12 @@
 class Jugador extends Modelo {
 
-    constructor(x, y) {
+    constructor(x, y, generarAtaqueCallback) {
         super(imagenes.jugador , x, y)
         this.vidas = 3;
         this.tiempoInvulnerable = 0;
-        this.mapType = "P"
-
-
+        this.mapType = "P";
+        this.ataqueCallback = generarAtaqueCallback;
+        this.counterAtaque = 0;
         this.estado = estados.moviendo;
 
         this.orientacion = orientaciones.derecha;
@@ -17,14 +17,14 @@ class Jugador extends Modelo {
 
         // Animaciones
         this.aIdleDerecha = new Animacion(imagenes.jugador_idle_derecha,
-            this.ancho, this.alto, 6, 8);
+            this.ancho, this.alto, 6, 6);
         this.aIdleIzquierda = new Animacion(imagenes.jugador_idle_izquierda,
-            this.ancho, this.alto, 6, 8);
+            this.ancho, this.alto, 6, 6);
         this.aCorriendoDerecha =
             new Animacion(imagenes.jugador_corriendo_derecha,
-                this.ancho, this.alto, 6, 8);
+                this.ancho, this.alto, 6, 6);
         this.aCorriendoIzquierda = new Animacion(imagenes.jugador_corriendo_izquierda,
-            this.ancho, this.alto, 6, 8);
+            this.ancho, this.alto, 6, 6);
 
         this.aSaltandoDerecha = new Animacion(imagenes.jugador_saltando_derecha,
             this.ancho, this.alto, 6, 4);
@@ -42,7 +42,7 @@ class Jugador extends Modelo {
 
         this.animacion.actualizar();
 
-
+        this.counterAtaque--;
         // Establecer orientación
         if ( this.vx > 0 ){
             this.orientacion = orientaciones.derecha;
@@ -134,6 +134,15 @@ class Jugador extends Modelo {
 
         } else {
             this.moverY(0);
+        }
+
+        if (this.counterAtaque <= 0) {
+            //Ataques
+            if (controles.atacarDerecha) {
+                var ataque = new Ataque(this.x + 22, this.y, imagenes.jugador_ataque_derecha);
+                this.ataqueCallback(ataque);
+                this.counterAtaque = 50
+            }
         }
     }
 

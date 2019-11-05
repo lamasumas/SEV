@@ -12,6 +12,7 @@ class GameLayer extends Layer {
         this.jugador ;
         this.espacios = new Espacio(0);
         this.enemigos = [];
+        this.ataques = [];
         this.cargarMapa("res/"+nivelActual+".txt", 1);
         this.mapa;
     }
@@ -23,6 +24,12 @@ class GameLayer extends Layer {
         if (this.pausa){
             return;
         }
+        this.ataques.forEach(elAtaque =>  {
+            if(elAtaque.estado == estados.finAnimacion)
+                this.ataques.splice(this.ataques.indexOf(elAtaque), 1);
+            else
+                elAtaque.actualizar();
+        })
 
         this.espacios.actualizar();
 
@@ -43,6 +50,7 @@ class GameLayer extends Layer {
         this.fondo.dibujar();
         this.jugador.dibujar(this.scrollX);
         this.enemigos.forEach(theEnemigo => theEnemigo.dibujar(this.scrollX));
+        this.ataques.forEach(elAtaque => elAtaque.dibujar(this.scrollX))
 
 
     }
@@ -76,7 +84,7 @@ class GameLayer extends Layer {
         switch(simbolo) {
 
             case "1":
-                this.jugador = new Jugador(x, y);
+                this.jugador = new Jugador(x, y, this.generarAtaque.bind(this));
                 // modificación para empezar a contar desde el suelo
                 //this.jugador.y = this.jugador.y - this.jugador.alto / 2;
 
@@ -107,6 +115,11 @@ class GameLayer extends Layer {
         }
 
 
+    }
+
+    generarAtaque(ataque){
+
+        this.ataques.push(ataque);
     }
 
 

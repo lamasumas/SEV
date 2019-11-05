@@ -97,9 +97,6 @@ class Mapa{
     eliminarDuplicados(nodosDescubiertos){
         return nodosDescubiertos.filter( (nodoSeleccionado, index, self) => index === self.findIndex((t) =>( t.i === nodoSeleccionado.i && t.j == nodoSeleccionado.j)))
     }
-
-
-
 }
 
 class Nodo{
