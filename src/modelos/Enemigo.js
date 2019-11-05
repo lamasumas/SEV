@@ -11,15 +11,16 @@ class Enemigo extends Modelo {
 
         // Ref a la animación actual
         this.animacion = this.aMover;
-
         this.vy = 0;
         this.vx = 0;
+        this.mapa;
     }
 
 
     actualizar (){
         this.animacion.actualizar();
 
+        this.calcularDireccion();
 
         switch (this.estado){
             case estados.moviendo:
@@ -39,12 +40,37 @@ class Enemigo extends Modelo {
                 this.vx = this.vxInteligencia;
             }
         }
-
-
-
-
     }
 
+    calcularDireccion(){
+        var tempI = Math.floor(this.y / 32 );
+        var tempJ = Math.floor(this.x / 32 );
+
+        this.vx = 0;
+        this.vy = 0;
+        var posicionActual = this.mapa[tempI][tempJ];
+
+        if (this.mapa.length >= tempI + 1 && this.mapa[tempI + 1][tempJ] < posicionActual)
+        {
+            this.vy = 3;
+            this.vxInteligencia = 1;
+        }
+        else if (0 <= tempI - 1 && this.mapa[tempI - 1][tempJ] < posicionActual)
+        {
+            this.vy = -3;
+            this.vxInteligencia = 1;
+        }
+        else if (this.mapa[tempI].length >= tempJ + 1 && this.mapa[tempI][tempJ + 1] < posicionActual)
+        {
+            this.vx = 3;
+            this.vxInteligencia = 1;
+        }
+        else if (0 <= tempJ - 1 && this.mapa[tempI][tempJ - 1] < posicionActual) {
+                this.vx = -3;
+            this.vxInteligencia = -1;
+        }
+
+    }
 
     dibujar (scrollX){
         scrollX = scrollX || 0;
