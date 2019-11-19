@@ -69,7 +69,7 @@ class Jugador extends Modelo {
                 }
                 break;
             case estados.moviendo:
-                if ( this.vx != 0 ) {
+                if ( this.vx != 0  || this.vy != 0) {
                     if (this.orientacion == orientaciones.derecha) {
                         this.animacion = this.aCorriendoDerecha;
                     }
@@ -77,7 +77,7 @@ class Jugador extends Modelo {
                         this.animacion = this.aCorriendoIzquierda;
                     }
                 }
-                if ( this.vx == 0){
+                if ( this.vx == 0 && this.vy == 0){
                     if (this.orientacion == orientaciones.derecha) {
                         this.animacion = this.aIdleDerecha;
                     }
@@ -139,10 +139,26 @@ class Jugador extends Modelo {
         if (this.counterAtaque <= 0) {
             //Ataques
             if (controles.atacarDerecha) {
-                var ataque = new Ataque(this.x + 22, this.y, imagenes.jugador_ataque_derecha);
+                var ataque = new Ataque(22, 0 , imagenes.jugador_ataque_derecha, this);
                 this.ataqueCallback(ataque);
                 this.counterAtaque = 50
             }
+            else if (controles.atacarIzuierda){
+                var ataque = new Ataque(-22, 0, imagenes.jugador_ataque_izquierda, this);
+                this.ataqueCallback(ataque);
+                this.counterAtaque = 50;
+            }
+            else if(controles.atacarAbajo){
+                var ataque = new Ataque(0 , 22, imagenes.jugador_ataque_abajo, this);
+                this.ataqueCallback(ataque);
+                this.counterAtaque = 50;
+            }
+            else if(controles.atacarArriba){
+                var ataque = new Ataque(0 , -22, imagenes.jugador_ataque_arriba, this);
+                this.ataqueCallback(ataque);
+                this.counterAtaque = 50;
+            }
+
         }
     }
 

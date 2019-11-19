@@ -1,9 +1,13 @@
 class Ataque extends Modelo {
-    constructor(x, y, spreadsheet) {
-        super(imagenes.vacio, x, y)
+    constructor(x, y, spreadsheet, objetoASeguir) {
+
+        super(imagenes.vacio, objetoASeguir.x + x,  objetoASeguir.y  + y)
+        this.sumarX = x;
+        this.sumarY = y
         this.estado = estados.moviendo;
+        this.objetoASeguir = objetoASeguir;
         this.aAtaque = new Animacion(spreadsheet,
-            32, 32, 0.5, 3, this.finAnimacion.bind(this));
+            32, 32, 1, 3, this.finAnimacion.bind(this));
         this.aVacio = new Animacion(imagenes.vacio,
             32, 32, 1, 1);
 
@@ -23,6 +27,8 @@ class Ataque extends Modelo {
 
 
     actualizar(){
+        this.x  = this.objetoASeguir.x +  this.sumarX;
+        this.y = this.objetoASeguir.y + this.sumarY;
         this.animacion.actualizar();
     }
 

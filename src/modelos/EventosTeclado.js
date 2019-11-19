@@ -29,6 +29,15 @@ function onKeyDown( event) {
             case 68:
                 controles.atacarDerecha = true;
                 break;
+            case 65:
+                controles.atacarIzuierda = true;
+                break;
+            case 83:
+                controles.atacarAbajo = true;
+                break;
+            case 87:
+                controles.atacarArriba = true;
+                break;
         }
 
     }
@@ -66,6 +75,15 @@ function onKeyUp( event) {
             break;
         case 68:
             controles.atacarDerecha = false;
+            break;
+        case 65:
+            controles.atacarIzuierda = false;
+            break;
+        case 83:
+            controles.atacarAbajo = false;
+            break;
+        case 87:
+            controles.atacarArriba = false;
             break;
     }
 
