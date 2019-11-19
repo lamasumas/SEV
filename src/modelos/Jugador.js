@@ -93,6 +93,7 @@ class Jugador extends Modelo {
     }
 
     moverX (direccion){
+
         this.vx = direccion * 3;
     }
 

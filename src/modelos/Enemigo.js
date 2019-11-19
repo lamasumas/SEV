@@ -16,6 +16,7 @@ class Enemigo extends Modelo {
             32, 32, 4, 6, this.finDeAnimacionMorir.bind(this));
         this.aMuerto = new Animacion(imagenes.vacio,
             32, 32, 1, 1);
+        this.reproduciendo = false;
 
         // Ref a la animación actual
         this.animacion = this.aMoverDerecha;
@@ -41,11 +42,15 @@ class Enemigo extends Modelo {
                     this.animacion  = this.aMoverIzquierda;
                 break;
             case estados.muriendo:
-                if(this.vxInteligencia > 0)
+                if(this.vxInteligencia > 0 && !this.reproduciendo) {
+                    this.reproduciendo = true;
                     this.animacion = this.aMorirDerecha;
-                else   if(this.vxInteligencia < 0){
+                }
+                else if(this.vxInteligencia < 0 && !this.reproduciendo){
+                    this.reproduciendo = true;
                     this.animacion = this.aMorirIzquierda;
                 }
+
                 break;
         }
 
