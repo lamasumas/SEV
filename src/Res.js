@@ -16,7 +16,8 @@ var imagenes = {
     enemigo : "res/enemies/goblin/goblin_idle_anim_f0.png",
     enemigo_movimiento : "res/enemies/goblin/goblin_run_spritesheet.png",
     enemigo_movimiento_izquierda: "res/enemies/goblin/goblin_run_spritesheet_izquierda.png",
-    enemigo_morir : "res/enemigo_morir.png",
+    enemigo_morir_derecha : "res/enemies/goblin/goblin_muerte_derecha.png",
+    enemigo_morir_izquierda: "res/enemies/goblin/goblin_muerte_izquierda.png",
     espada: "res/heroes/knight/weapon_sword_1.png",
     vacio: "res/effects/vacio.png"
 

@@ -10,6 +10,12 @@ class Enemigo extends Modelo {
            32, 32, 6, 6);
         this.aMoverIzquierda = new Animacion(imagenes.enemigo_movimiento_izquierda,
             32, 32, 6, 6);
+        this.aMorirDerecha = new Animacion(imagenes.enemigo_morir_derecha,
+            32, 32, 4, 6, this.finDeAnimacionMorir.bind(this));
+        this.aMorirIzquierda = new Animacion(imagenes.enemigo_morir_izquierda,
+            32, 32, 4, 6, this.finDeAnimacionMorir.bind(this));
+        this.aMuerto = new Animacion(imagenes.vacio,
+            32, 32, 1, 1);
 
         // Ref a la animación actual
         this.animacion = this.aMoverDerecha;
@@ -18,7 +24,10 @@ class Enemigo extends Modelo {
         this.mapa;
     }
 
-
+    finDeAnimacionMorir(){
+        this.estado = estados.muerto;
+        this.animacion = this.aMuerto;
+    }
     actualizar (){
         this.animacion.actualizar();
 
@@ -32,7 +41,11 @@ class Enemigo extends Modelo {
                     this.animacion  = this.aMoverIzquierda;
                 break;
             case estados.muriendo:
-                this.animacion = this.aMorir;
+                if(this.vxInteligencia > 0)
+                    this.animacion = this.aMorirDerecha;
+                else   if(this.vxInteligencia < 0){
+                    this.animacion = this.aMorirIzquierda;
+                }
                 break;
         }
 

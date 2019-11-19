@@ -7,7 +7,7 @@ class Ataque extends Modelo {
         this.estado = estados.moviendo;
         this.objetoASeguir = objetoASeguir;
         this.aAtaque = new Animacion(spreadsheet,
-            32, 32, 1, 3, this.finAnimacion.bind(this));
+            32, 32, 0.5, 3, this.finAnimacion.bind(this));
         this.aVacio = new Animacion(imagenes.vacio,
             32, 32, 1, 1);
 

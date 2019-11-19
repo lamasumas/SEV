@@ -38,8 +38,25 @@ class GameLayer extends Layer {
         this.jugador.actualizar()
         this.enemigos.forEach(theEnemigo => {
             theEnemigo.mapa= this.mapa.mapaEsquema;
+            if(theEnemigo.estado == estados.muerto)
+            {
+                this.enemigos.splice(this.enemigos.indexOf(theEnemigo), 1)
+            }
             theEnemigo.actualizar();
         });
+
+        //colisiones ataque
+        var i,j;
+        for( i = 0; i < this.ataques.length; i++){
+            for( j = 0; j< this.enemigos.length; j++)
+            {
+                if(this.ataques[i].colisiona(this.enemigos[j]))
+                {
+                    this.enemigos[j].estado = estados.muriendo;
+                    this.espacios.eliminarCuerpoDinamico(this.enemigos[j]);
+                }
+            }
+        }
 
     }
 
