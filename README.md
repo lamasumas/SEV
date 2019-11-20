@@ -1,3 +1,3 @@
 
 <h2>SEV</h2>
-<p> Este un repositorio para el desarrollo de los juegos de tematica libre para la asignatura de "Software de Entretenimiento y Videojuegos" de la Universidad de Oviedo</p>
+<p> Este un repositorio para desarrollar y mantener el codigo de los videojuegos de tematica libre, de la asignatura de "Software de Entretenimiento y Videojuegos" de la Universidad de Oviedo</p>
