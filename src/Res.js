@@ -19,7 +19,10 @@ var imagenes = {
     enemigo_morir_derecha : "res/enemies/goblin/goblin_muerte_derecha.png",
     enemigo_morir_izquierda: "res/enemies/goblin/goblin_muerte_izquierda.png",
     espada: "res/heroes/knight/weapon_sword_1.png",
-    vacio: "res/effects/vacio.png"
+    vacio: "res/effects/vacio.png",
+    barril:"res/props_itens/barrel1.png",
+    mesa:"res/props_itens/mesa.png",
+    mesa_rota: "res/props_itens/mesa_rota.png"
 
 };
 

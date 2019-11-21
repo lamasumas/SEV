@@ -8,11 +8,14 @@ class GameLayer extends Layer {
 
     iniciar() {
         this.scrollX = 0;
+        this.scrollY = 0;
         this.fondo = new Fondo(imagenes.fondo, 480 * 0.5, 320 * 0.5);
         this.jugador ;
         this.espacios = new Espacio(0);
         this.enemigos = [];
         this.ataques = [];
+        this.obstaculos = [];
+        this.destruibles = [];
         this.cargarMapa("res/"+nivelActual+".txt", 1);
         this.mapa;
     }
@@ -20,10 +23,13 @@ class GameLayer extends Layer {
 
     actualizar (){
         //this.calcularScroll();
-        this.mapa.updateMap(this.jugador);
+        this.mapa.updateMap(this.jugador, this.obstaculos);
         if (this.pausa){
             return;
         }
+
+        this.espacios.getEstaticos().forEach( x => x.actualizar());
+
         this.ataques.forEach(elAtaque =>  {
             if(elAtaque.estado == estados.finAnimacion)
                 this.ataques.splice(this.ataques.indexOf(elAtaque), 1);
@@ -31,10 +37,14 @@ class GameLayer extends Layer {
                 elAtaque.actualizar();
         })
 
+        this.destruibles.forEach( destruible =>
+            (destruible.estado == estados.finAnimacion ? this.destruibles.splice(this.destruibles.indexOf(destruible),1):destruible.actualizar()))
         this.espacios.actualizar();
+
 
       //  this.espacio.actualizar();
         this.fondo.vx = -1;
+        this.jugador.mapa = this.mapa.mapaEsquema;
         this.jugador.actualizar()
         this.enemigos.forEach(theEnemigo => {
             theEnemigo.mapa= this.mapa.mapaEsquema;
@@ -58,6 +68,17 @@ class GameLayer extends Layer {
             }
         }
 
+        //colisiones destruible
+        for( i = 0; i < this.ataques.length; i++){
+            for( j = 0; j< this.destruibles.length; j++)
+            {
+                if(this.ataques[i].colisiona(this.destruibles[j]))
+                {
+                    this.destruibles[j].loHanGolpeado()
+                    this.espacios.eliminarCuerpoEstatico(this.destruibles[j]);
+                }
+            }
+        }
     }
 
 
@@ -65,10 +86,13 @@ class GameLayer extends Layer {
 
         //this.calcularScroll();
         this.fondo.dibujar();
-        this.jugador.dibujar(this.scrollX);
-        this.enemigos.forEach(theEnemigo => theEnemigo.dibujar(this.scrollX));
-        this.ataques.forEach(elAtaque => elAtaque.dibujar(this.scrollX))
+        this.espacios.getEstaticos().forEach( x => x.dibujar())
 
+        this.jugador.dibujar(this.scrollX);
+
+        this.ataques.forEach(elAtaque => elAtaque.dibujar(this.scrollX))
+        this.enemigos.forEach(theEnemigo => theEnemigo.dibujar(this.scrollX));
+        this.destruibles.forEach(destruible => destruible.dibujar(this.scrollX));
 
     }
 
@@ -80,7 +104,7 @@ class GameLayer extends Layer {
         fichero.onreadystatechange = function () {
             var texto = fichero.responseText;
             var lineas = texto.split('\n');
-            this.anchoMapa = (lineas[0].length-1) * extraSize;
+            this.anchoMapa = (lineas[0].length-1) ;
             this.altoMapa = lineas.length;
             this.mapa = new Mapa(this.anchoMapa, this.altoMapa)
             for (var i = 0; i < lineas.length; i++) {
@@ -111,6 +135,17 @@ class GameLayer extends Layer {
                 var enemigo = new Enemigo(x,y, this.jugador);
                 this.enemigos.push(enemigo);
                 this.espacios.agregarCuerpoDinamico(enemigo);
+                break;
+            case "B":
+                var barril = new Bloque( imagenes.barril, x,y);
+                this.obstaculos.push(barril)
+                this.espacios.agregarCuerpoEstatico(barril);
+                break;
+            case "D":
+                var destruible = new Bloque_Destruible(imagenes.mesa, imagenes.mesa_rota,x,y,32,32, 4, 2);
+                this.destruibles.push(destruible);
+                this.espacios.agregarCuerpoEstatico(destruible);
+                break;
         }
     }
 

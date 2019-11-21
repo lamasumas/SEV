@@ -14,8 +14,7 @@ class Enemigo extends Modelo {
             32, 32, 4, 6, this.finDeAnimacionMorir.bind(this));
         this.aMorirIzquierda = new Animacion(imagenes.enemigo_morir_izquierda,
             32, 32, 4, 6, this.finDeAnimacionMorir.bind(this));
-        this.aMuerto = new Animacion(imagenes.vacio,
-            32, 32, 1, 1);
+        this.aMuerto = new Animacion(imagenes.vacio,32, 32, 1, 1);
         this.reproduciendo = false;
 
         // Ref a la animación actual
@@ -73,7 +72,7 @@ class Enemigo extends Modelo {
         this.vy = 0;
         var posicionActual = this.mapa[tempI][tempJ];
 
-        if (this.mapa.length >= tempI + 1 && this.mapa[tempI + 1][tempJ] < posicionActual)
+        if (this.mapa.length >= tempI + 1 && this.mapa[tempI + 1][tempJ] < posicionActual && this.mapa[tempI + 1][tempJ] != -1)
         {
             if(posicionActual == 1)
             {
@@ -84,7 +83,7 @@ class Enemigo extends Modelo {
                 this.vxInteligencia = 1;
             }
         }
-        else if (0 <= tempI - 1 && this.mapa[tempI - 1][tempJ] < posicionActual)
+        else if (0 <= tempI - 1 && this.mapa[tempI - 1][tempJ] < posicionActual && this.mapa[tempI - 1][tempJ] != -1)
         {
             if(posicionActual == 1)
             {
@@ -95,7 +94,7 @@ class Enemigo extends Modelo {
                 this.vxInteligencia = -1;
             }
         }
-        else if (this.mapa[tempI].length >= tempJ + 1 && this.mapa[tempI][tempJ + 1] < posicionActual)
+        else if (this.mapa[tempI].length >= tempJ + 1 && this.mapa[tempI][tempJ + 1] < posicionActual && this.mapa[tempI  ][tempJ +1] != -1)
         {
             if(posicionActual == 1)
             {
@@ -106,7 +105,7 @@ class Enemigo extends Modelo {
                 this.vxInteligencia = 1;
             }
         }
-        else if (0 <= tempJ - 1 && this.mapa[tempI][tempJ - 1] < posicionActual) {
+        else if (0 <= tempJ - 1 && this.mapa[tempI][tempJ - 1] < posicionActual && this.mapa[tempI][tempJ -1] != -1) {
             if(posicionActual == 1)
             {
                 //golpear izquierda.

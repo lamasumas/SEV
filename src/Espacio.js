@@ -240,4 +240,7 @@ class Espacio {
     getDinamicos() {
         return this.dinamicos;
     }
+    getEstaticos(){
+        return this.estaticos;
+    }
 }

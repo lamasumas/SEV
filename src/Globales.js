@@ -6,6 +6,7 @@ estados.muerto = 5;
 estados.disparando = 6;
 estados.impactado = 7;
 estados.finAnimacion = 8;
+estados.normal = 9;
 
 var orientaciones = {};
 orientaciones.derecha = 2;

@@ -23,15 +23,21 @@ class Mapa{
     }
 
 
-    updateMap(jugador) {
+    updateMap(jugador, obstaculos) {
         this.mapaEsquema = new Array(this.altoMapa + 1);
         this.player = {};
         for (var i = 0; i < this.mapaEsquema.length; i++)
             this.mapaEsquema[i] = new Array(Math.floor(this.anchoMapa )).fill(0);
+        obstaculos.forEach(obstaculo => {
+            var tempi = Math.floor(obstaculo.y /32);
+            var tempj = Math.floor(obstaculo.x /32);
+            this.mapaEsquema[tempi][tempj] = obstaculo.mapType;
+        });
         this.player.i = Math.floor(jugador.y / 32);;
         this.player.j = Math.floor(jugador.x / 32);
+
         this.calcularWave();
-      //  this.printMapa();
+
 
     }
 
@@ -53,6 +59,7 @@ class Mapa{
             nodosExplorar = nodosDesclubiertos;
 
         }
+
     }
 
     descubrirNodos(nodosExplorar){

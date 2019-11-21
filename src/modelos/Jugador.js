@@ -5,6 +5,7 @@ class Jugador extends Modelo {
         this.vidas = 3;
         this.tiempoInvulnerable = 0;
         this.mapType = "P";
+        this.mapa;
         this.ataqueCallback = generarAtaqueCallback;
         this.counterAtaque = 0;
         this.estado = estados.moviendo;
@@ -93,8 +94,8 @@ class Jugador extends Modelo {
     }
 
     moverX (direccion){
+            this.vx = direccion * 3;
 
-        this.vx = direccion * 3;
     }
 
     moverY (direccion){
@@ -114,12 +115,11 @@ class Jugador extends Modelo {
 
 
     actualizarPosicion(){
-
         // Eje X
-        if (controles.moverX > 0) {
+        if (controles.moverX > 0 &&  (this.x - gameLayer.scrollX) - this.ancho/2 < 450) {
             this.moverX(1);
 
-        } else if (controles.moverX < 0) {
+        } else if (controles.moverX < 0 && (this.x - gameLayer.scrollX) + this.ancho/2 > 29) {
             this.moverX(-1);
 
         } else {
@@ -127,10 +127,10 @@ class Jugador extends Modelo {
         }
 
         // Eje Y
-        if (controles.moverY > 0) {
+        if (controles.moverY > 0 && (this.y - gameLayer.scrollY) + this.alto/2 > 35) {
             this.moverY(-1);
 
-        } else if (controles.moverY < 0) {
+        } else if (controles.moverY < 0 && (this.y - gameLayer.scrollY - this.alto/2 )< 270){
             this.moverY(1);
 
         } else {
