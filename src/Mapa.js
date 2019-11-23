@@ -13,7 +13,10 @@ class Mapa{
             var linea ="";
             for(var j=0; j< this.mapaEsquema[i].length; j++ )
             {
-                linea += "\t"+this.mapaEsquema[i][j]
+                if(this.mapaEsquema[i][j] == -1)
+                    linea += " P"
+                else
+                    linea += " "+this.mapaEsquema[i][j]
             }
             theMapa += linea + "\n";
             linea = ""
@@ -29,15 +32,18 @@ class Mapa{
         for (var i = 0; i < this.mapaEsquema.length; i++)
             this.mapaEsquema[i] = new Array(Math.floor(this.anchoMapa )).fill(0);
         obstaculos.forEach(obstaculo => {
-            var tempi = Math.floor(obstaculo.y /32);
-            var tempj = Math.floor(obstaculo.x /32);
-            this.mapaEsquema[tempi][tempj] = obstaculo.mapType;
+
+                var tempi = Math.trunc(obstaculo.y /32);
+                var tempj = Math.trunc(obstaculo.x /32);
+                this.mapaEsquema[tempi][tempj] = obstaculo.mapType;
+
+
         });
-        this.player.i = Math.floor(jugador.y / 32);;
-        this.player.j = Math.floor(jugador.x / 32);
+        this.player.i = Math.trunc(jugador.y / 32);
+        this.player.j = Math.trunc(jugador.x / 32);
 
         this.calcularWave();
-
+        this.printMapa();
 
     }
 

@@ -65,11 +65,9 @@ class Enemigo extends Modelo {
     }
 
     calcularDireccion(){
-        var tempI = Math.floor(this.y / 32 );
+        var tempI = Math.floor(this.y / 32);
         var tempJ = Math.floor(this.x / 32 );
 
-        this.vx = 0;
-        this.vy = 0;
         var posicionActual = this.mapa[tempI][tempJ];
 
         if (this.mapa.length >= tempI + 1 && this.mapa[tempI + 1][tempJ] < posicionActual && this.mapa[tempI + 1][tempJ] != -1)
@@ -80,10 +78,12 @@ class Enemigo extends Modelo {
             }
             else {
                 this.vy = 2;
+
                 this.vxInteligencia = 1;
             }
         }
-        else if (0 <= tempI - 1 && this.mapa[tempI - 1][tempJ] < posicionActual && this.mapa[tempI - 1][tempJ] != -1)
+
+        if (0 <= tempI - 1 && this.mapa[tempI - 1][tempJ] < posicionActual && this.mapa[tempI - 1][tempJ] != -1)
         {
             if(posicionActual == 1)
             {
@@ -94,7 +94,7 @@ class Enemigo extends Modelo {
                 this.vxInteligencia = -1;
             }
         }
-        else if (this.mapa[tempI].length >= tempJ + 1 && this.mapa[tempI][tempJ + 1] < posicionActual && this.mapa[tempI  ][tempJ +1] != -1)
+         if (this.mapa[tempI].length >= tempJ + 1 && this.mapa[tempI][tempJ + 1] < posicionActual && this.mapa[tempI  ][tempJ +1] != -1)
         {
             if(posicionActual == 1)
             {
@@ -105,7 +105,7 @@ class Enemigo extends Modelo {
                 this.vxInteligencia = 1;
             }
         }
-        else if (0 <= tempJ - 1 && this.mapa[tempI][tempJ - 1] < posicionActual && this.mapa[tempI][tempJ -1] != -1) {
+         if (0 <= tempJ - 1 && this.mapa[tempI][tempJ - 1] < posicionActual && this.mapa[tempI][tempJ -1] != -1) {
             if(posicionActual == 1)
             {
                 //golpear izquierda.
@@ -115,6 +115,7 @@ class Enemigo extends Modelo {
                 this.vxInteligencia = -1;
             }
         }
+        console.log("Enemigo: ["+ tempI +", " +tempJ+"] - Posicion: "+ posicionActual);
 
 
     }

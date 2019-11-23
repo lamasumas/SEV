@@ -106,14 +106,14 @@ class GameLayer extends Layer {
             var lineas = texto.split('\n');
             this.anchoMapa = (lineas[0].length-1) ;
             this.altoMapa = lineas.length;
-            this.mapa = new Mapa(this.anchoMapa, this.altoMapa)
+            this.mapa = new Mapa(this.anchoMapa+1, this.altoMapa)
             for (var i = 0; i < lineas.length; i++) {
                 var linea = lineas[i];
                 for (var j = 0; j < linea.length; j++) {
                     var simbolo = linea[j];
-                    var x = 40 / 2 + j * 40; // x central
-                    var y = 32 + i * 32; // y de abajo
-                    this.cargarObjetoMapa(simbolo, x, y);
+                   // var x = 40 / 2 + j * 40; // x central
+                    //var y = 32 + i * 32; // y de abajo
+                    this.cargarObjetoMapa(simbolo, j*32, i*32);
                 }
             }
         }.bind(this);
@@ -125,24 +125,24 @@ class GameLayer extends Layer {
         switch(simbolo) {
 
             case "1":
-                this.jugador = new Jugador(x, y, this.generarAtaque.bind(this));
+                this.jugador = new Jugador(x, y +12, this.generarAtaque.bind(this));
                 // modificación para empezar a contar desde el suelo
                 //this.jugador.y = this.jugador.y - this.jugador.alto / 2;
 
                 this.espacios.agregarCuerpoDinamico(this.jugador);
                 break;
             case "E":
-                var enemigo = new Enemigo(x,y, this.jugador);
+                var enemigo = new Enemigo(x,y+12, this.jugador);
                 this.enemigos.push(enemigo);
                 this.espacios.agregarCuerpoDinamico(enemigo);
                 break;
             case "B":
-                var barril = new Bloque( imagenes.barril, x,y);
+                var barril = new Bloque( imagenes.barril, x+12,y +12);
                 this.obstaculos.push(barril)
                 this.espacios.agregarCuerpoEstatico(barril);
                 break;
             case "D":
-                var destruible = new Bloque_Destruible(imagenes.mesa, imagenes.mesa_rota,x,y,32,32, 4, 2);
+                var destruible = new Bloque_Destruible(imagenes.mesa, imagenes.mesa_rota,x,y +12,32,32, 4, 2);
                 this.destruibles.push(destruible);
                 this.espacios.agregarCuerpoEstatico(destruible);
                 break;
