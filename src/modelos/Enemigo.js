@@ -115,7 +115,7 @@ class Enemigo extends Modelo {
                 this.vxInteligencia = -1;
             }
         }
-        console.log("Enemigo: ["+ tempI +", " +tempJ+"] - Posicion: "+ posicionActual);
+    //    console.log("Enemigo: ["+ tempI +", " +tempJ+"] - Posicion: "+ posicionActual);
 
 
     }

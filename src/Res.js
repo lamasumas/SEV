@@ -22,7 +22,9 @@ var imagenes = {
     vacio: "res/effects/vacio.png",
     barril:"res/props_itens/barrel1.png",
     mesa:"res/props_itens/mesa.png",
-    mesa_rota: "res/props_itens/mesa_rota.png"
+    mesa_rota: "res/props_itens/mesa_rota.png",
+    cofre_cerrado: "res/props_itens/cofre_cerrado.png",
+    cofre_abierto: "res/props_itens/cofre_abrir.png"
 
 };
 

@@ -146,6 +146,10 @@ class GameLayer extends Layer {
                 this.destruibles.push(destruible);
                 this.espacios.agregarCuerpoEstatico(destruible);
                 break;
+            case "C":
+                var cofre = new Cofre(imagenes.cofre_cerrado, imagenes.cofre_abierto, imagenes.vacio, x + 12, y +12);
+                this.espacios.agregarCuerpoEstatico(cofre);
+                break;
         }
     }
 

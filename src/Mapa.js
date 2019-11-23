@@ -43,7 +43,7 @@ class Mapa{
         this.player.j = Math.trunc(jugador.x / 32);
 
         this.calcularWave();
-        this.printMapa();
+        //this.printMapa();
 
     }
 
