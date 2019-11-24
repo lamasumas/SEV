@@ -9,6 +9,9 @@ class Jugador extends Modelo {
         this.ataqueCallback = generarAtaqueCallback;
         this.counterAtaque = 0;
         this.estado = estados.moviendo;
+        this.flechas = 0;
+        this.vidas = 3;
+        this.invencibilidad = 0;
 
         this.orientacion = orientaciones.derecha;
 
@@ -87,8 +90,12 @@ class Jugador extends Modelo {
                     }
                 }
                 break;
+
+
+
         }
 
+        (this.invencibilidad > 0)? this.invencibilidad--: this.invencibilidad=0;
         this.actualizarPosicion();
 
     }
@@ -108,8 +115,11 @@ class Jugador extends Modelo {
 
     dibujar (scrollX){
         scrollX = scrollX || 0;
+        if(this.invencibilidad > 0)
+            contexto.globalAlpha = 0.5;
         this.animacion.dibujar(this.x - scrollX, this.y);
 
+        contexto.globalAlpha = 1;
 
     }
 

@@ -16,17 +16,27 @@ class GameLayer extends Layer {
         this.ataques = [];
         this.obstaculos = [];
         this.destruibles = [];
+        this.triggers = [];
+        this.cofres = [];
+        this.marcadorVidas = [new Fondo(imagenes.corazon, 20, 20), new Fondo(imagenes.corazon, 40, 20), new Fondo(imagenes.corazon, 60, 20)];
         this.cargarMapa("res/"+nivelActual+".txt", 1);
         this.mapa;
+        this.pausa = new Fondo(imagenes.pausa, 420/1.8, 320 /2.2)
     }
 
 
     actualizar (){
+        if(controles.pausa)
+            return;
+
+        if (this.jugador.vidas == 0)
+        {
+
+        }
+
         //this.calcularScroll();
         this.mapa.updateMap(this.jugador, this.obstaculos);
-        if (this.pausa){
-            return;
-        }
+
 
         this.espacios.getEstaticos().forEach( x => x.actualizar());
 
@@ -41,6 +51,15 @@ class GameLayer extends Layer {
             (destruible.estado == estados.finAnimacion ? this.destruibles.splice(this.destruibles.indexOf(destruible),1):destruible.actualizar()))
         this.espacios.actualizar();
 
+
+        for(i = 0; i< this.cofres.length; i++)
+        {
+            if(this.cofres[i].estado == estados.finAnimacion)
+            {
+                this.espacios.eliminarCuerpoEstatico(this.cofres[i]);
+                this.cofres.splice(i,1);
+            }
+        }
 
       //  this.espacio.actualizar();
         this.fondo.vx = -1;
@@ -79,12 +98,38 @@ class GameLayer extends Layer {
                 }
             }
         }
+
+        //Activacion de triggers
+        for( i = 0; i< this.triggers.length; i++)
+        {
+            if(this.jugador.colisiona(this.triggers[i]) && controles.interactuar)
+            {
+                this.triggers[i].triggered();
+                this.triggers.splice(i,1);
+            }
+        }
+
+      //colisiones enemigo
+        this.enemigos.forEach( theEnemigo => {
+            if (theEnemigo.colisiona(this.jugador) && this.jugador.invencibilidad <=0) {
+                this.marcadorVidas.splice(this.marcadorVidas.length - 1, 1);
+                this.jugador.vidas--;
+                this.jugador.invencibilidad = 30;
+
+            }});
+
+
+
+
+
+
     }
 
 
     dibujar() {
 
         //this.calcularScroll();
+
         this.fondo.dibujar();
         this.espacios.getEstaticos().forEach( x => x.dibujar())
 
@@ -94,6 +139,14 @@ class GameLayer extends Layer {
         this.enemigos.forEach(theEnemigo => theEnemigo.dibujar(this.scrollX));
         this.destruibles.forEach(destruible => destruible.dibujar(this.scrollX));
 
+        contexto.globalAlpha = 0.5;
+        this.marcadorVidas.forEach( marcador => marcador.dibujar());
+        contexto.globalAlpha = 1;
+
+        if(controles.pausa)
+        {
+            this.pausa.dibujar();
+        }
     }
 
 
@@ -142,12 +195,15 @@ class GameLayer extends Layer {
                 this.espacios.agregarCuerpoEstatico(barril);
                 break;
             case "D":
-                var destruible = new Bloque_Destruible(imagenes.mesa, imagenes.mesa_rota,x,y +12,32,32, 4, 2);
+                var destruible = new Bloque_Destruible(imagenes.mesa, imagenes.mesa_rota,x +12,y +12,32,32, 4, 2);
                 this.destruibles.push(destruible);
                 this.espacios.agregarCuerpoEstatico(destruible);
                 break;
             case "C":
                 var cofre = new Cofre(imagenes.cofre_cerrado, imagenes.cofre_abierto, imagenes.vacio, x + 12, y +12);
+                var theTrigger = new Trigger(x +12 , y+36, cofre);
+                this.triggers.push(theTrigger);
+                this.cofres.push(cofre);
                 this.espacios.agregarCuerpoEstatico(cofre);
                 break;
         }

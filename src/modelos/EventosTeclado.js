@@ -5,13 +5,13 @@ window.addEventListener('keyup', onKeyUp, false);
 
 function onKeyDown( event) {
     entrada = entradas.teclado;
+
     // agregar la tecla pulsada si no estaba
     var posicion = teclas.indexOf(event.keyCode);
     if ( posicion == -1 ) {
         teclas.push(event.keyCode);
         switch ( event.keyCode ){
             case 32:
-
                 controles.continuar = true;
                 break;
             case 38:
@@ -38,6 +38,11 @@ function onKeyDown( event) {
             case 87:
                 controles.atacarArriba = true;
                 break;
+            case 69:
+                controles.interactuar = true;
+                break;
+            case 27:
+                controles.pausa = !controles.pausa;
         }
 
     }
@@ -84,6 +89,9 @@ function onKeyUp( event) {
             break;
         case 87:
             controles.atacarArriba = false;
+            break;
+        case 69:
+            controles.interactuar = false;
             break;
     }
 

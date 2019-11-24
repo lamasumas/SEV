@@ -10,9 +10,6 @@ var imagenes = {
     jugador_ataque_izquierda : "res/effects/player_attack_izquierda.png" ,
     jugador_ataque_abajo: "res/effects/player_attack_abajo.png",
     jugador_ataque_arriba: "res/effects/player_attack_arriba.png",
-    jugador_disparando_izquierda : "res/jugador_disparando_izquierda.png",
-    jugador_saltando_derecha : "res/jugador_saltando_derecha.png",
-    jugador_saltando_izquierda : "res/jugador_saltando_izquierda.png",
     enemigo : "res/enemies/goblin/goblin_idle_anim_f0.png",
     enemigo_movimiento : "res/enemies/goblin/goblin_run_spritesheet.png",
     enemigo_movimiento_izquierda: "res/enemies/goblin/goblin_run_spritesheet_izquierda.png",
@@ -24,7 +21,9 @@ var imagenes = {
     mesa:"res/props_itens/mesa.png",
     mesa_rota: "res/props_itens/mesa_rota.png",
     cofre_cerrado: "res/props_itens/cofre_cerrado.png",
-    cofre_abierto: "res/props_itens/cofre_abrir.png"
+    cofre_abierto: "res/props_itens/cofre_abrir.png",
+    corazon: "res/props_itens/vida.png",
+    pausa :"res/ui (new)/PausaMenu1.png"
 
 };
 
