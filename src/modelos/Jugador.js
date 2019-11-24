@@ -30,13 +30,6 @@ class Jugador extends Modelo {
         this.aCorriendoIzquierda = new Animacion(imagenes.jugador_corriendo_izquierda,
             this.ancho, this.alto, 6, 6);
 
-        this.aSaltandoDerecha = new Animacion(imagenes.jugador_saltando_derecha,
-            this.ancho, this.alto, 6, 4);
-        this.aSaltandoIzquierda = new Animacion( imagenes.jugador_saltando_izquierda,
-            this.ancho, this.alto, 6, 4);
-
-
-
         this.animacion = this.aIdleDerecha;
     }
 
@@ -125,6 +118,8 @@ class Jugador extends Modelo {
 
 
     actualizarPosicion(){
+
+        var lanzarFlecha = (this.flechas > 0)? true:false;
         // Eje X
         if (controles.moverX > 0 &&  (this.x - gameLayer.scrollX) - this.ancho/2 < 450) {
             this.moverX(1);
@@ -147,25 +142,26 @@ class Jugador extends Modelo {
             this.moverY(0);
         }
 
+
         if (this.counterAtaque <= 0) {
             //Ataques
             if (controles.atacarDerecha) {
-                var ataque = new Ataque(22, 0 , imagenes.jugador_ataque_derecha, this);
+                var ataque = new Ataque(22, 0 , imagenes.jugador_ataque_derecha, imagenes.flecha_derecha, this,lanzarFlecha);
                 this.ataqueCallback(ataque);
                 this.counterAtaque = 50
             }
             else if (controles.atacarIzuierda){
-                var ataque = new Ataque(-22, 0, imagenes.jugador_ataque_izquierda, this);
+                var ataque = new Ataque(-22, 0, imagenes.jugador_ataque_izquierda,imagenes.flecha_izquierda ,this, lanzarFlecha);
                 this.ataqueCallback(ataque);
                 this.counterAtaque = 50;
             }
             else if(controles.atacarAbajo){
-                var ataque = new Ataque(0 , 22, imagenes.jugador_ataque_abajo, this);
+                var ataque = new Ataque(0 , 22, imagenes.jugador_ataque_abajo,imagenes.flecha_abajo, this, lanzarFlecha);
                 this.ataqueCallback(ataque);
                 this.counterAtaque = 50;
             }
             else if(controles.atacarArriba){
-                var ataque = new Ataque(0 , -22, imagenes.jugador_ataque_arriba, this);
+                var ataque = new Ataque(0 , -22, imagenes.jugador_ataque_arriba,imagenes.flecha_arriba, this, lanzarFlecha);
                 this.ataqueCallback(ataque);
                 this.counterAtaque = 50;
             }

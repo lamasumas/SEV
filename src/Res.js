@@ -23,7 +23,14 @@ var imagenes = {
     cofre_cerrado: "res/props_itens/cofre_cerrado.png",
     cofre_abierto: "res/props_itens/cofre_abrir.png",
     corazon: "res/props_itens/vida.png",
-    pausa :"res/ui (new)/PausaMenu1.png"
+    pausa :"res/ui (new)/PausaMenu1.png",
+    menu_muerte: "res/ui (new)/Menu.muerte.png",
+    menu_muerte_estatico: "res/ui (new)/MenuMuerto2.png",
+    powerup_flechas:"res/ui (new)/icono_flechas.png",
+    flecha_derecha:"res/heroes/knight/flecha_derecha.png",
+    flecha_izquierda:"res/heroes/knight/flecha_izquierda.png",
+    flecha_arriba:"res/heroes/knight/flecha_arriba.png",
+    flecha_abajo:"res/heroes/knight/flecha_abajo.png"
 
 };
 

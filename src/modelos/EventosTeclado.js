@@ -5,7 +5,7 @@ window.addEventListener('keyup', onKeyUp, false);
 
 function onKeyDown( event) {
     entrada = entradas.teclado;
-
+    controles.pausa = false;
     // agregar la tecla pulsada si no estaba
     var posicion = teclas.indexOf(event.keyCode);
     if ( posicion == -1 ) {

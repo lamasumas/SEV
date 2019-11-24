@@ -1,5 +1,5 @@
 class Cofre extends Modelo{
-    constructor(imagen_cerrado, imagen_abierto, vacio, x, y){
+    constructor(imagen_cerrado, imagen_abierto, vacio, x, y, genrarEnemigo, generarpowerUp){
         super(vacio , x, y);
         this.aCerrado = new Animacion(imagen_cerrado,25, 25, 6, 8);
         this.aAbierto = new Animacion(imagen_abierto, 32, 32 , 4 ,4, this.generateObject.bind(this))
@@ -7,6 +7,8 @@ class Cofre extends Modelo{
         this.mapType = -1;
         this.animacion = this.aCerrado;
         this.estado = estados.normal
+        this.generarEnemigo = genrarEnemigo;
+        this.generarPowerup = generarpowerUp
     }
 
     actualizar(){
@@ -20,8 +22,21 @@ class Cofre extends Modelo{
     generateObject(){
         this.animacion = this.aVacio;
         this.estado = estados.finAnimacion;
+        var posibiliadad = Math.floor( Math.random() * 3);
+        posibiliadad = powerup.arco;
+        switch (posibiliadad) {
+            case (powerup.trampa):
+                this.generarEnemigo(this.x, this.y);
+                break;
+            case (powerup.arco ):
+                this.generarPowerup(posibiliadad, this.x, this.y);
+                break;
+            case (powerup.vida):
+                this.generarPowerup(posibiliadad, this.x, this.y);
+                break;
 
 
+        }
     }
 
     onTrigger(){

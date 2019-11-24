@@ -8,6 +8,7 @@ class GameLayer extends Layer {
 
     iniciar() {
         this.scrollX = 0;
+        controles.pausa = false;
         this.scrollY = 0;
         this.fondo = new Fondo(imagenes.fondo, 480 * 0.5, 320 * 0.5);
         this.jugador ;
@@ -18,10 +19,12 @@ class GameLayer extends Layer {
         this.destruibles = [];
         this.triggers = [];
         this.cofres = [];
-        this.marcadorVidas = [new Fondo(imagenes.corazon, 20, 20), new Fondo(imagenes.corazon, 40, 20), new Fondo(imagenes.corazon, 60, 20)];
+        this.powerups = [];
+        this.marcadorVidas = [];
         this.cargarMapa("res/"+nivelActual+".txt", 1);
         this.mapa;
         this.pausa = new Fondo(imagenes.pausa, 420/1.8, 320 /2.2)
+        this.menuMuerte = new FondoAnimado(imagenes.menu_muerte_estatico, imagenes.menu_muerte, 420/1.8,320/2.2, 120, 125, 4, 6);
     }
 
 
@@ -31,7 +34,8 @@ class GameLayer extends Layer {
 
         if (this.jugador.vidas == 0)
         {
-
+            this.menuMuerte.actualizar();
+            return ;
         }
 
         //this.calcularScroll();
@@ -74,7 +78,7 @@ class GameLayer extends Layer {
             theEnemigo.actualizar();
         });
 
-        //colisiones ataque
+        //colisiones ataque-enemigo
         var i,j;
         for( i = 0; i < this.ataques.length; i++){
             for( j = 0; j< this.enemigos.length; j++)
@@ -83,6 +87,21 @@ class GameLayer extends Layer {
                 {
                     this.enemigos[j].estado = estados.muriendo;
                     this.espacios.eliminarCuerpoDinamico(this.enemigos[j]);
+                }
+
+            }
+        }
+
+        //colisiones ataque-obstaculo
+        {
+            for( i = 0; i < this.ataques.length; i++){
+                for( j = 0; j< this.obstaculos.length; j++)
+                {
+                    if(this.ataques[i].colisiona(this.obstaculos[j]))
+                    {
+                        this.ataques.splice(i,1);
+                    }
+
                 }
             }
         }
@@ -119,6 +138,22 @@ class GameLayer extends Layer {
             }});
 
 
+        //colisiones powerup
+        for(i = 0; i< this.powerups.length; i++){
+
+            if(this.powerups[i].colisiona(this.jugador)){
+                this.powerups[i].colisionado();
+                this.powerups[i].actualizar();
+            }
+            if(this.powerups[i].borrar == true)
+            {
+                this.powerups[i].effecto();
+                this.powerups.splice(i,1)
+
+            }
+        }
+
+
 
 
 
@@ -131,6 +166,10 @@ class GameLayer extends Layer {
         //this.calcularScroll();
 
         this.fondo.dibujar();
+        for(var i=1; i<= this.jugador.vidas;i++)
+        {
+            new Fondo(imagenes.corazon, 20*i, 20).dibujar();
+        }
         this.espacios.getEstaticos().forEach( x => x.dibujar())
 
         this.jugador.dibujar(this.scrollX);
@@ -147,6 +186,14 @@ class GameLayer extends Layer {
         {
             this.pausa.dibujar();
         }
+        if (this.jugador.vidas == 0)
+        {
+            this.menuMuerte.dibujar(this.scrollX);
+        }
+
+        this.powerups.forEach( powerup => powerup.dibujar());
+
+
     }
 
 
@@ -200,7 +247,7 @@ class GameLayer extends Layer {
                 this.espacios.agregarCuerpoEstatico(destruible);
                 break;
             case "C":
-                var cofre = new Cofre(imagenes.cofre_cerrado, imagenes.cofre_abierto, imagenes.vacio, x + 12, y +12);
+                var cofre = new Cofre(imagenes.cofre_cerrado, imagenes.cofre_abierto, imagenes.vacio, x + 12, y +12,this.generarEnemigo.bind(this), this.generarPowerup.bind(this));
                 var theTrigger = new Trigger(x +12 , y+36, cofre);
                 this.triggers.push(theTrigger);
                 this.cofres.push(cofre);
@@ -232,6 +279,17 @@ class GameLayer extends Layer {
     generarAtaque(ataque){
 
         this.ataques.push(ataque);
+    }
+    generarEnemigo(x,y)
+    {
+        var enemigo = new Enemigo(x, y);
+        this.espacios.agregarCuerpoDinamico(enemigo);
+        this.enemigos.push(enemigo);
+    }
+
+    generarPowerup(opcion, x,y){
+
+        this.powerups.push( new PowerUp(opcion,x,y, this.jugador));
     }
 
 

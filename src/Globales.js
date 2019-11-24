@@ -23,4 +23,10 @@ var entradas = {}; // tipos
 entradas.pulsaciones = 1;
 entradas.teclado = 2;
 entradas.gamepad = 3;
+
+powerup = {}
+powerup.arco = 0;
+powerup.vida = 1;
+powerup.trampa = 2;
+
 var entrada = entradas.pulsaciones;
