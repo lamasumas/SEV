@@ -30,4 +30,6 @@ powerup.vida = 1;
 powerup.trampa = 2;
 powerup.dano = 3;
 
+var posicionSala = {};
+
 var entrada = entradas.pulsaciones;

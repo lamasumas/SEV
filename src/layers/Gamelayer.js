@@ -86,10 +86,11 @@ class GameLayer extends Layer {
         for( i = 0; i < this.ataques.length; i++){
             for( j = 0; j< this.enemigos.length; j++)
             {
-                if(this.ataques[i].colisiona(this.enemigos[j]))
+                if(this.ataques[i].colisiona(this.enemigos[j]) && this.enemigos[j].invencibilidad <= 0)
                 {
-                    this.enemigos[i].vida--;
-                    if(this.enemigos[i].vida <=0) {
+                    this.enemigos[j].vida -= this.ataques[i].dano;
+                    this.enemigos[j].invencibilidad = 10;
+                    if(this.enemigos[j].vida <=0) {
                         this.enemigos[j].estado = estados.muriendo;
                         this.espacios.eliminarCuerpoDinamico(this.enemigos[j]);
                     }
@@ -178,15 +179,18 @@ class GameLayer extends Layer {
         }
         this.contadorFlechasNumeros.dibujar();
         this.contadorFlechas.dibujar(scrollX);
-
-
         contexto.globalAlpha = 1;
+
         this.espacios.getEstaticos().forEach( x => x.dibujar())
 
         this.jugador.dibujar(this.scrollX);
 
         this.ataques.forEach(elAtaque => elAtaque.dibujar(this.scrollX))
-        this.enemigos.forEach(theEnemigo => theEnemigo.dibujar(this.scrollX));
+        this.enemigos.forEach(theEnemigo =>{
+            (theEnemigo.invencibilidad > 0) ? contexto.globalAlpha = 0.5: contexto.globalAlpha=1;
+            theEnemigo.dibujar(this.scrollX)
+            contexto.globalAlpha = 1;
+        });
         this.destruibles.forEach(destruible => destruible.dibujar(this.scrollX));
 
 
@@ -272,6 +276,11 @@ class GameLayer extends Layer {
                 var enemigoSlime = new EnemigoSlime(x +12, y+12, imagenes.slime, true);
                 this.enemigos.push(enemigoSlime);
                 this.espacios.agregarCuerpoDinamico(enemigoSlime);
+                break;
+            case "V":
+                var enemigoVolador = new EnemigoVolador(x+12, y+12, imagenes.volador,true);
+                this.enemigos.push(enemigoVolador);
+                this.espacios.agregarCuerpoDinamico(enemigoVolador);
                 break;
         }
     }

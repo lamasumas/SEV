@@ -23,6 +23,7 @@ class Enemigo extends Modelo {
         this.vy = 0;
         this.vx = 0;
         this.mapa;
+        this.invencibilidad = 0;
 
     }
 
@@ -64,6 +65,7 @@ class Enemigo extends Modelo {
                 this.vx = this.vxInteligencia;
             }
         }
+        this.invencibilidad--;
     }
 
     calcularDireccion(){

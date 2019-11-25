@@ -4,7 +4,7 @@ class Ataque extends Modelo {
         super(imagenes.vacio, objetoASeguir.x + x,  objetoASeguir.y  + y)
         this.sumarX = x;
         this.sumarY = y
-        this.daño = objetoASeguir.dano;
+        this.dano = objetoASeguir.dano;
         this.estado = estados.moviendo;
         this.objetoASeguir = objetoASeguir;
         this.aAtaqueBasico = new Animacion(spreadsheetBasico,

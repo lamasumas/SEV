@@ -141,10 +141,10 @@ class Espacio {
                     = this.estaticos[j].x - this.estaticos[j].ancho/2;
 
                 // Alerta!, Elemento estático en la trayectoria
-                if ( (arribaDinamico +  this.dinamicos[i].vy) <= abajoEstatico &&
+                if ( (arribaDinamico +  this.dinamicos[i].vy ) <= abajoEstatico &&
                     abajoDinamico > arribaEstatico
                     && izquierdaDinamico < derechaEstatico
-                    && derechaDinamico > izquierdaEstatico ){
+                    && derechaDinamico > izquierdaEstatico && this.dinamicos[i].mapType !="V"){
 
                     // Comprobamos si la distancia al estático es MAYOR
                     // que nuestro movimientoPosible actual
@@ -158,9 +158,9 @@ class Espacio {
 
                 }
             }
+                this.dinamicos[i].y = this.dinamicos[i].y + movimientoPosible;
+                this.dinamicos[i].vy = movimientoPosible;
 
-            this.dinamicos[i].y = this.dinamicos[i].y + movimientoPosible;
-            this.dinamicos[i].vy = movimientoPosible;
         }
     }
 
@@ -191,7 +191,7 @@ class Espacio {
                 if ( (abajoDinamico +  this.dinamicos[i].vy) >= arribaEstatico &&
                     arribaDinamico < abajoEstatico
                     && izquierdaDinamico < derechaEstatico
-                    && derechaDinamico > izquierdaEstatico ){
+                    && derechaDinamico > izquierdaEstatico && this.dinamicos[i].mapType !="V" ){
 
                     // Comprobamos si la distancia al estático es menor
                     // que nuestro movimientoPosible actual

@@ -23,23 +23,16 @@ class EnemigoSlime extends Enemigo {
                 this.vx = -2;
             }
         }
-        else{
-            if (this.vxInteligencia > 0) {
-                this.vy = 2;
-            }
-            else{
-                this.vy = -2;
-            }
-        }
+
+
     }
 
     actualizar() {
         super.actualizar();
         var tempI = Math.floor(this.y / 32);
         var tempJ = Math.floor(this.x / 32 );
-
         if(this.derecha_izquierda) {
-            if (this.mapa[tempI][tempJ + 1] == -1 || tempI >= this.mapa[tempI].length)
+            if (this.mapa[tempI][tempJ + 1] == -1 || tempJ >= 14)
                 this.vxInteligencia = -1;
             else if (this.mapa[tempI][tempJ - 1] == -1 || tempJ <= 0)
                 this.vxInteligencia = 1;

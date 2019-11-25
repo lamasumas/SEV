@@ -36,7 +36,11 @@ var imagenes = {
     slime_derecha: "res/enemies/slime/slime_run_spritesheeet.png",
     slime_izquierda: "res/enemies/slime/slime_run_spritesheeet_izquierda.png",
     slime_muerte_derecha: "res/enemies/slime/slime_morir_spritesheeet_derecha.png",
-    slime_muerte_izquierda:"res/enemies/slime/slime_morir_spritesheeet_izquierda.png"
+    slime_muerte_izquierda:"res/enemies/slime/slime_morir_spritesheeet_izquierda.png",
+    volador: "res/enemies/flying creature/fly_anim_f0.png",
+    volador_movimiento: "res/enemies/flying creature/fly_anim_spritesheet.png",
+    volador_muerte: "res/enemies/flying creature/fly_morir_spritesheet.png"
+
 
 };
 
