@@ -30,7 +30,8 @@ var imagenes = {
     flecha_derecha:"res/heroes/knight/flecha_derecha.png",
     flecha_izquierda:"res/heroes/knight/flecha_izquierda.png",
     flecha_arriba:"res/heroes/knight/flecha_arriba.png",
-    flecha_abajo:"res/heroes/knight/flecha_abajo.png"
+    flecha_abajo:"res/heroes/knight/flecha_abajo.png",
+    powerup_daño:"res/props_itens/potion_yellow.png"
 
 };
 

@@ -19,6 +19,7 @@ class Enemigo extends Modelo {
 
         // Ref a la animación actual
         this.animacion = this.aMoverDerecha;
+        this.vida = 1;
         this.vy = 0;
         this.vx = 0;
         this.mapa;

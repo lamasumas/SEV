@@ -8,8 +8,9 @@ class PowerUp extends Modelo{
                 break;
             case powerup.vida:
                 imagen = imagenes.corazon;
-
                 break;
+            case powerup.dano:
+                imagen = imagenes.powerup_daño;
 
         }
         super(imagen,x ,y+10);
@@ -38,12 +39,14 @@ class PowerUp extends Modelo{
     effecto() {
         switch (this.opcion){
             case powerup.arco:
-                this.jugador.flechas += 10;
+                this.jugador.flechas += 5;
                 break;
             case powerup.vida:
                 this.jugador.vidas++;
                 break;
-
+            case powerup.dano:
+                this.jugador.dano++;
+                break;
         }
         this.borrar = true;
     }

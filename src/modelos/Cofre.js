@@ -23,7 +23,6 @@ class Cofre extends Modelo{
         this.animacion = this.aVacio;
         this.estado = estados.finAnimacion;
         var posibiliadad = Math.floor( Math.random() * 3);
-        posibiliadad = powerup.arco;
         switch (posibiliadad) {
             case (powerup.trampa):
                 this.generarEnemigo(this.x, this.y);

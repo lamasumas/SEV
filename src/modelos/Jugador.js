@@ -6,6 +6,7 @@ class Jugador extends Modelo {
         this.tiempoInvulnerable = 0;
         this.mapType = "P";
         this.mapa;
+        this.dano = 1;
         this.ataqueCallback = generarAtaqueCallback;
         this.counterAtaque = 0;
         this.estado = estados.moviendo;
@@ -145,25 +146,32 @@ class Jugador extends Modelo {
 
         if (this.counterAtaque <= 0) {
             //Ataques
+
             if (controles.atacarDerecha) {
                 var ataque = new Ataque(22, 0 , imagenes.jugador_ataque_derecha, imagenes.flecha_derecha, this,lanzarFlecha);
                 this.ataqueCallback(ataque);
-                this.counterAtaque = 50
+                this.counterAtaque = 50;
+                (lanzarFlecha)?this.flechas--:this.flechas=0;
+
             }
             else if (controles.atacarIzuierda){
                 var ataque = new Ataque(-22, 0, imagenes.jugador_ataque_izquierda,imagenes.flecha_izquierda ,this, lanzarFlecha);
                 this.ataqueCallback(ataque);
                 this.counterAtaque = 50;
+
             }
             else if(controles.atacarAbajo){
                 var ataque = new Ataque(0 , 22, imagenes.jugador_ataque_abajo,imagenes.flecha_abajo, this, lanzarFlecha);
                 this.ataqueCallback(ataque);
                 this.counterAtaque = 50;
+                (lanzarFlecha)?this.flechas--:this.flechas=0;
             }
             else if(controles.atacarArriba){
                 var ataque = new Ataque(0 , -22, imagenes.jugador_ataque_arriba,imagenes.flecha_arriba, this, lanzarFlecha);
                 this.ataqueCallback(ataque);
                 this.counterAtaque = 50;
+                (lanzarFlecha)?this.flechas--:this.flechas=0;
+
             }
 
         }

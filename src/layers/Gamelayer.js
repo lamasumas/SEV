@@ -20,10 +20,11 @@ class GameLayer extends Layer {
         this.triggers = [];
         this.cofres = [];
         this.powerups = [];
-        this.marcadorVidas = [];
+        this.contadorFlechas = new Fondo(imagenes.powerup_flechas,400,20);
+        this.contadorFlechasNumeros = new Texto(0, 420,28);
         this.cargarMapa("res/"+nivelActual+".txt", 1);
         this.mapa;
-        this.pausa = new Fondo(imagenes.pausa, 420/1.8, 320 /2.2)
+        this.pausa = new Fondo(imagenes.pausa, 420/1.8, 320 /2.2);
         this.menuMuerte = new FondoAnimado(imagenes.menu_muerte_estatico, imagenes.menu_muerte, 420/1.8,320/2.2, 120, 125, 4, 6);
     }
 
@@ -85,8 +86,11 @@ class GameLayer extends Layer {
             {
                 if(this.ataques[i].colisiona(this.enemigos[j]))
                 {
-                    this.enemigos[j].estado = estados.muriendo;
-                    this.espacios.eliminarCuerpoDinamico(this.enemigos[j]);
+                    this.enemigos[i].vida--;
+                    if(this.enemigos[i].vida <=0) {
+                        this.enemigos[j].estado = estados.muriendo;
+                        this.espacios.eliminarCuerpoDinamico(this.enemigos[j]);
+                    }
                 }
 
             }
@@ -128,13 +132,11 @@ class GameLayer extends Layer {
             }
         }
 
-      //colisiones enemigo
+      //colisiones enemigo-jugador
         this.enemigos.forEach( theEnemigo => {
             if (theEnemigo.colisiona(this.jugador) && this.jugador.invencibilidad <=0) {
-                this.marcadorVidas.splice(this.marcadorVidas.length - 1, 1);
                 this.jugador.vidas--;
                 this.jugador.invencibilidad = 30;
-
             }});
 
 
@@ -157,7 +159,7 @@ class GameLayer extends Layer {
 
 
 
-
+        this.contadorFlechasNumeros.valor= this.jugador.flechas;
     }
 
 
@@ -166,10 +168,16 @@ class GameLayer extends Layer {
         //this.calcularScroll();
 
         this.fondo.dibujar();
+        contexto.globalAlpha = 0.5;
         for(var i=1; i<= this.jugador.vidas;i++)
         {
             new Fondo(imagenes.corazon, 20*i, 20).dibujar();
         }
+        this.contadorFlechasNumeros.dibujar();
+        this.contadorFlechas.dibujar(scrollX);
+
+
+        contexto.globalAlpha = 1;
         this.espacios.getEstaticos().forEach( x => x.dibujar())
 
         this.jugador.dibujar(this.scrollX);
@@ -178,9 +186,7 @@ class GameLayer extends Layer {
         this.enemigos.forEach(theEnemigo => theEnemigo.dibujar(this.scrollX));
         this.destruibles.forEach(destruible => destruible.dibujar(this.scrollX));
 
-        contexto.globalAlpha = 0.5;
-        this.marcadorVidas.forEach( marcador => marcador.dibujar());
-        contexto.globalAlpha = 1;
+
 
         if(controles.pausa)
         {
@@ -190,6 +196,7 @@ class GameLayer extends Layer {
         {
             this.menuMuerte.dibujar(this.scrollX);
         }
+
 
         this.powerups.forEach( powerup => powerup.dibujar());
 
@@ -228,7 +235,6 @@ class GameLayer extends Layer {
                 this.jugador = new Jugador(x, y +12, this.generarAtaque.bind(this));
                 // modificación para empezar a contar desde el suelo
                 //this.jugador.y = this.jugador.y - this.jugador.alto / 2;
-
                 this.espacios.agregarCuerpoDinamico(this.jugador);
                 break;
             case "E":
@@ -253,6 +259,9 @@ class GameLayer extends Layer {
                 this.cofres.push(cofre);
                 this.espacios.agregarCuerpoEstatico(cofre);
                 break;
+            case "P":
+                var elPowerup = new PowerUp(powerup.dano, x +12, y+12, this.jugador);
+                this.powerups.push(elPowerup);
         }
     }
 
