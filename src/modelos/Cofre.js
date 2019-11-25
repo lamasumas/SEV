@@ -9,10 +9,18 @@ class Cofre extends Modelo{
         this.estado = estados.normal
         this.generarEnemigo = genrarEnemigo;
         this.generarPowerup = generarpowerUp
+        if( cofresAbiertos.filter(x => x != brujula.salaActual.mapa).length != 0) {
+            this.animacion= this.aVacio;
+            this.estado = estados.finAnimacion;
+        }
+
     }
 
     actualizar(){
-     this.animacion.actualizar();
+
+            this.animacion.actualizar();
+
+
     }
 
 
@@ -20,25 +28,31 @@ class Cofre extends Modelo{
         this.animacion.dibujar(this.x - scrollX, this.y)
     }
     generateObject(){
-        this.animacion = this.aVacio;
-        this.estado = estados.finAnimacion;
-        var posibiliadad = Math.floor( Math.random() * 3);
-        switch (posibiliadad) {
-            case (powerup.trampa):
-                this.generarEnemigo(this.x, this.y);
-                break;
-            case (powerup.arco ):
-                this.generarPowerup(posibiliadad, this.x, this.y);
-                break;
-            case (powerup.vida):
-                this.generarPowerup(posibiliadad, this.x, this.y);
-                break;
-
+            cofresAbiertos.push(this)
+            this.animacion = this.aVacio;
+            this.estado = estados.finAnimacion;
+            var posibiliadad = Math.floor(Math.random() * 3);
+            switch (posibiliadad) {
+                case (powerup.trampa):
+                    this.generarEnemigo(this.x, this.y);
+                    break;
+                case (powerup.arco):
+                    this.generarPowerup(posibiliadad, this.x, this.y);
+                    break;
+                case (powerup.vida):
+                    this.generarPowerup(posibiliadad, this.x, this.y);
+                    break;
 
         }
     }
 
     onTrigger(){
-        this.animacion = this.aAbierto;
+
+        if( cofresAbiertos.filter(x => x != brujula.salaActual.mapa).length == 0)
+        {
+            this.animacion = this.aAbierto;
+            cofresAbiertos.push(brujula.salaActual.mapa);
+        }
+
     }
 }

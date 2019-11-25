@@ -158,6 +158,7 @@ class Jugador extends Modelo {
                 var ataque = new Ataque(-22, 0, imagenes.jugador_ataque_izquierda,imagenes.flecha_izquierda ,this, lanzarFlecha);
                 this.ataqueCallback(ataque);
                 this.counterAtaque = 50;
+                (lanzarFlecha)?this.flechas--:this.flechas=0;
 
             }
             else if(controles.atacarAbajo){

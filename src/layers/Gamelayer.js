@@ -20,13 +20,15 @@ class GameLayer extends Layer {
         this.triggers = [];
         this.cofres = [];
         this.powerups = [];
+        this.teletransportes = [];
         this.contadorFlechas = new Fondo(imagenes.powerup_flechas,400,20);
         this.contadorFlechasNumeros = new Texto(0, 420,28);
-        this.cargarMapa("res/"+nivelActual+".txt", 1);
+        this.cargarMapa("res/mapas/"+ brujula.getNombreMapaActual(), 1);
         this.mapa;
         this.pausa = new Fondo(imagenes.pausa, 420/1.8, 320 /2.2);
         this.menuMuerte = new FondoAnimado(imagenes.menu_muerte_estatico, imagenes.menu_muerte,
             420/1.8,320/2.2, 120, 125, 4, 6);
+        this.ajustarPosicionEntrada();
     }
 
 
@@ -159,13 +161,62 @@ class GameLayer extends Layer {
             }
         }
 
+        //Teletransporte
+        for(i = 0; i< this.teletransportes.length; i++)
+        {
+            if(this.jugador.colisiona(this.teletransportes[i]))
+            {
+                this.teletransportes[i].teleport();
+                var copia_vidas = this.jugador.vidas;
+                var copia_dano = this.jugador.dano;
+                var copia_flechas = this.jugador.flechas;
+                this.iniciar();
+                this.jugador.vidas = copia_vidas;
+                this.jugador.flechas = copia_flechas;
+                this.jugador.dano = copia_dano;
+                break;
+            }
+
+        }
+
 
 
 
 
         this.contadorFlechasNumeros.valor= this.jugador.flechas;
     }
+    ajustarPosicionEntrada() {
+        if (brujula.salaActual.entradaAnteriorSala != NaN) {
 
+            switch (brujula.salaActual.entradaAnteriorSala) {
+                case posicionSala.izquierda:
+                    var entrada = this.teletransportes.filter(x => x.posicion == posicionSala.derecha)[0];
+                    this.jugador.x = entrada.x - 30;
+                    this.jugador.y = entrada.y;
+                    break;
+                case posicionSala.derecha:
+                    var entrada = this.teletransportes.filter(x => x.posicion == posicionSala.izquierda)[0];
+                    this.jugador.x = entrada.x + 30;
+                    this.jugador.y = entrada.y;
+                    break;
+                case posicionSala.abajo:
+                    var entrada = this.teletransportes.filter(x => x.posicion == posicionSala.arriba)[0];
+                    this.jugador.x = entrada.x;
+                    this.jugador.y = entrada.y + 25;
+                    break;
+                case posicionSala.arriba:
+                    var entrada = this.teletransportes.filter(x => x.posicion == posicionSala.abajo)[0];
+                    this.jugador.x = entrada.x;
+                    this.jugador.y = entrada.y - 25;
+                    break;
+
+
+            }
+    }
+
+
+
+    }
 
     dibujar() {
 
@@ -282,6 +333,23 @@ class GameLayer extends Layer {
                 this.enemigos.push(enemigoVolador);
                 this.espacios.agregarCuerpoDinamico(enemigoVolador);
                 break;
+            case "R":
+                var teleport = new Teletransporte(x +10, y +12, imagenes.vacio, posicionSala.derecha);
+                this.teletransportes.push(teleport);
+                break;
+            case "L":
+                var teleport = new Teletransporte(x - 12, y +12, imagenes.vacio, posicionSala.izquierda);
+                this.teletransportes.push(teleport);
+                break;
+            case "U":
+                var teleport = new Teletransporte(x + 12, y - 5 , imagenes.vacio, posicionSala.arriba);
+                this.teletransportes.push(teleport);
+                break;
+            case "A":
+                var teleport = new Teletransporte(x + 12, y + 20, imagenes.vacio, posicionSala.abajo);
+                this.teletransportes.push(teleport);
+                break;
+
         }
     }
 
