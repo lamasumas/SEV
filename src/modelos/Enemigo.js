@@ -1,7 +1,7 @@
 class Enemigo extends Modelo {
 
-    constructor(x, y) {
-        super(imagenes.enemigo, x, y)
+    constructor(x, y , imagen) {
+        super(imagen, x, y);
         this.vxInteligencia = 1;
         this.vx = this.vxInteligencia;
         this.mapType = "E"
@@ -23,6 +23,7 @@ class Enemigo extends Modelo {
         this.vy = 0;
         this.vx = 0;
         this.mapa;
+
     }
 
     finDeAnimacionMorir(){

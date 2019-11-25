@@ -25,7 +25,8 @@ class GameLayer extends Layer {
         this.cargarMapa("res/"+nivelActual+".txt", 1);
         this.mapa;
         this.pausa = new Fondo(imagenes.pausa, 420/1.8, 320 /2.2);
-        this.menuMuerte = new FondoAnimado(imagenes.menu_muerte_estatico, imagenes.menu_muerte, 420/1.8,320/2.2, 120, 125, 4, 6);
+        this.menuMuerte = new FondoAnimado(imagenes.menu_muerte_estatico, imagenes.menu_muerte,
+            420/1.8,320/2.2, 120, 125, 4, 6);
     }
 
 
@@ -53,7 +54,8 @@ class GameLayer extends Layer {
         })
 
         this.destruibles.forEach( destruible =>
-            (destruible.estado == estados.finAnimacion ? this.destruibles.splice(this.destruibles.indexOf(destruible),1):destruible.actualizar()))
+            (destruible.estado == estados.finAnimacion ?
+                this.destruibles.splice(this.destruibles.indexOf(destruible),1):destruible.actualizar()))
         this.espacios.actualizar();
 
 
@@ -134,7 +136,8 @@ class GameLayer extends Layer {
 
       //colisiones enemigo-jugador
         this.enemigos.forEach( theEnemigo => {
-            if (theEnemigo.colisiona(this.jugador) && this.jugador.invencibilidad <=0) {
+            if (theEnemigo.colisiona(this.jugador) && this.jugador.invencibilidad <=0 &&
+                (theEnemigo.estado != estados.muriendo && theEnemigo.estado != estados.muerto)) {
                 this.jugador.vidas--;
                 this.jugador.invencibilidad = 30;
             }});
@@ -238,7 +241,7 @@ class GameLayer extends Layer {
                 this.espacios.agregarCuerpoDinamico(this.jugador);
                 break;
             case "E":
-                var enemigo = new Enemigo(x,y+12, this.jugador);
+                var enemigo = new Enemigo(x,y+12, imagenes.enemigo);
                 this.enemigos.push(enemigo);
                 this.espacios.agregarCuerpoDinamico(enemigo);
                 break;
@@ -248,12 +251,14 @@ class GameLayer extends Layer {
                 this.espacios.agregarCuerpoEstatico(barril);
                 break;
             case "D":
-                var destruible = new Bloque_Destruible(imagenes.mesa, imagenes.mesa_rota,x +12,y +12,32,32, 4, 2);
+                var destruible = new Bloque_Destruible(imagenes.mesa, imagenes.mesa_rota,x +12,
+                    y +12,32,32, 4, 2);
                 this.destruibles.push(destruible);
                 this.espacios.agregarCuerpoEstatico(destruible);
                 break;
             case "C":
-                var cofre = new Cofre(imagenes.cofre_cerrado, imagenes.cofre_abierto, imagenes.vacio, x + 12, y +12,this.generarEnemigo.bind(this), this.generarPowerup.bind(this));
+                var cofre = new Cofre(imagenes.cofre_cerrado, imagenes.cofre_abierto, imagenes.vacio, x + 12,
+                    y +12,this.generarEnemigo.bind(this), this.generarPowerup.bind(this));
                 var theTrigger = new Trigger(x +12 , y+36, cofre);
                 this.triggers.push(theTrigger);
                 this.cofres.push(cofre);
@@ -262,6 +267,12 @@ class GameLayer extends Layer {
             case "P":
                 var elPowerup = new PowerUp(powerup.dano, x +12, y+12, this.jugador);
                 this.powerups.push(elPowerup);
+                break;
+            case "S":
+                var enemigoSlime = new EnemigoSlime(x +12, y+12, imagenes.slime, true);
+                this.enemigos.push(enemigoSlime);
+                this.espacios.agregarCuerpoDinamico(enemigoSlime);
+                break;
         }
     }
 
@@ -291,7 +302,7 @@ class GameLayer extends Layer {
     }
     generarEnemigo(x,y)
     {
-        var enemigo = new Enemigo(x, y);
+        var enemigo = new Enemigo(x, y, imagenes.enemigo);
         this.espacios.agregarCuerpoDinamico(enemigo);
         this.enemigos.push(enemigo);
     }

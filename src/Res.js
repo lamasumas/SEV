@@ -31,7 +31,12 @@ var imagenes = {
     flecha_izquierda:"res/heroes/knight/flecha_izquierda.png",
     flecha_arriba:"res/heroes/knight/flecha_arriba.png",
     flecha_abajo:"res/heroes/knight/flecha_abajo.png",
-    powerup_daño:"res/props_itens/potion_yellow.png"
+    powerup_daño:"res/props_itens/potion_yellow.png",
+    slime: "res/enemies/slime/slime_idle_anim_f0.png",
+    slime_derecha: "res/enemies/slime/slime_run_spritesheeet.png",
+    slime_izquierda: "res/enemies/slime/slime_run_spritesheeet_izquierda.png",
+    slime_muerte_derecha: "res/enemies/slime/slime_morir_spritesheeet_derecha.png",
+    slime_muerte_izquierda:"res/enemies/slime/slime_morir_spritesheeet_izquierda.png"
 
 };
 
