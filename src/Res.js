@@ -43,7 +43,9 @@ var imagenes = {
     torch: "res/props_itens/torch_spritesheet.png",
     wall_1: "res/tiles/wall/wall_1.png",
     wall_2: "res/tiles/wall/wall_2.png",
-    wall_3: "res/tiles/wall/wall_3.png"
+    wall_3: "res/tiles/wall/wall_3.png",
+    fondo_menu: "res/ui (new)/fondoMenu.png",
+    menu_info: "res/ui (new)/InfoMenu.png"
 
 
 };

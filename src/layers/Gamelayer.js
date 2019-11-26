@@ -44,7 +44,7 @@ class GameLayer extends Layer {
         }
 
         //this.calcularScroll();
-        this.mapa.updateMap(this.jugador, this.obstaculos, this.destruibles);
+        this.mapa.updateMap(this.jugador, this.obstaculos, this.destruibles, this.cofres);
 
 
         this.espacios.getEstaticos().forEach( x => x.actualizar());
