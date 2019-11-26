@@ -21,6 +21,7 @@ class GameLayer extends Layer {
         this.cofres = [];
         this.powerups = [];
         this.teletransportes = [];
+        this.bloquesAnimados =[];
         this.contadorFlechas = new Fondo(imagenes.powerup_flechas,400,20);
         this.contadorFlechasNumeros = new Texto(0, 420,28);
         this.cargarMapa("res/mapas/"+ brujula.getNombreMapaActual(), 1);
@@ -59,7 +60,7 @@ class GameLayer extends Layer {
             (destruible.estado == estados.finAnimacion ?
                 this.destruibles.splice(this.destruibles.indexOf(destruible),1):destruible.actualizar()))
         this.espacios.actualizar();
-
+        this.bloquesAnimados.forEach(x => x.actualizar());
 
         for(i = 0; i< this.cofres.length; i++)
         {
@@ -164,7 +165,7 @@ class GameLayer extends Layer {
         //Teletransporte
         for(i = 0; i< this.teletransportes.length; i++)
         {
-            if(this.jugador.colisiona(this.teletransportes[i]))
+            if(this.jugador.colisiona(this.teletransportes[i]) && brujula.salaActual.getSala(this.teletransportes[i].posicion))
             {
                 this.teletransportes[i].teleport();
                 var copia_vidas = this.jugador.vidas;
@@ -223,16 +224,9 @@ class GameLayer extends Layer {
         //this.calcularScroll();
 
         this.fondo.dibujar();
-        contexto.globalAlpha = 0.5;
-        for(var i=1; i<= this.jugador.vidas;i++)
-        {
-            new Fondo(imagenes.corazon, 20*i, 20).dibujar();
-        }
-        this.contadorFlechasNumeros.dibujar();
-        this.contadorFlechas.dibujar(scrollX);
-        contexto.globalAlpha = 1;
 
         this.espacios.getEstaticos().forEach( x => x.dibujar())
+        this.bloquesAnimados.forEach(x => x.dibujar());
 
         this.jugador.dibujar(this.scrollX);
 
@@ -258,7 +252,14 @@ class GameLayer extends Layer {
 
         this.powerups.forEach( powerup => powerup.dibujar());
 
-
+        contexto.globalAlpha = 0.5;
+        for(var i=1; i<= this.jugador.vidas;i++)
+        {
+            new Fondo(imagenes.corazon, 20*i, 20).dibujar();
+        }
+        this.contadorFlechasNumeros.dibujar();
+        this.contadorFlechas.dibujar(scrollX);
+        contexto.globalAlpha = 1;
     }
 
 
@@ -301,13 +302,13 @@ class GameLayer extends Layer {
                 this.espacios.agregarCuerpoDinamico(enemigo);
                 break;
             case "B":
-                var barril = new Bloque( imagenes.barril, x+12,y +12);
+                var barril = new Bloque( imagenes.barril, x+12,y +12, 30);
                 this.obstaculos.push(barril)
                 this.espacios.agregarCuerpoEstatico(barril);
                 break;
             case "D":
                 var destruible = new Bloque_Destruible(imagenes.mesa, imagenes.mesa_rota,x +12,
-                    y +12,32,32, 4, 2);
+                    y +12,32,32, 4, 2 );
                 this.destruibles.push(destruible);
                 this.espacios.agregarCuerpoEstatico(destruible);
                 break;
@@ -338,7 +339,7 @@ class GameLayer extends Layer {
                 this.teletransportes.push(teleport);
                 break;
             case "L":
-                var teleport = new Teletransporte(x - 12, y +12, imagenes.vacio, posicionSala.izquierda);
+                var teleport = new Teletransporte(x - 10, y +12, imagenes.vacio, posicionSala.izquierda);
                 this.teletransportes.push(teleport);
                 break;
             case "U":
@@ -349,6 +350,24 @@ class GameLayer extends Layer {
                 var teleport = new Teletransporte(x + 12, y + 20, imagenes.vacio, posicionSala.abajo);
                 this.teletransportes.push(teleport);
                 break;
+            case "T":
+                var torch = new  BloqueAnimado(imagenes.torch, x+12, y+12, imagenes.torch);
+                this.bloquesAnimados.push(torch);
+                break;
+            case "W":
+                var aleatorio = Math.floor((Math.random()*3) +1);
+                var imagenWall = imagenes.wall_1;
+                switch (aleatorio)
+                {
+                    case 1: imagenWall = imagenes.wall_1; break;
+                    case 2: imagenWall = imagenes.wall_2; break;
+                    case 3: imagenWall = imagenes.wall_3; break;
+                }
+                var wall = new Bloque(imagenWall, x+12, y+12, 30)
+                this.obstaculos.push(wall)
+                this.espacios.agregarCuerpoEstatico(wall);
+                break;
+
 
         }
     }

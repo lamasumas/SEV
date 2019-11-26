@@ -1,6 +1,6 @@
 class Bloque_Destruible extends Bloque {
     constructor(imagen, tiles, x ,y, anchoT, altoT, frames, velocidad) {
-        super(imagen,x,y);
+        super(imagen,x,y,30);
         this.aRoto = new Animacion(tiles, anchoT, altoT, velocidad,frames,this.roto.bind(this))
         this.aVacio = new Animacion(imagenes.vacio,32, 32, 1, 1);
         this.golpeado = false;

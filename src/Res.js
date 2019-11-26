@@ -39,7 +39,11 @@ var imagenes = {
     slime_muerte_izquierda:"res/enemies/slime/slime_morir_spritesheeet_izquierda.png",
     volador: "res/enemies/flying creature/fly_anim_f0.png",
     volador_movimiento: "res/enemies/flying creature/fly_anim_spritesheet.png",
-    volador_muerte: "res/enemies/flying creature/fly_morir_spritesheet.png"
+    volador_muerte: "res/enemies/flying creature/fly_morir_spritesheet.png",
+    torch: "res/props_itens/torch_spritesheet.png",
+    wall_1: "res/tiles/wall/wall_1.png",
+    wall_2: "res/tiles/wall/wall_2.png",
+    wall_3: "res/tiles/wall/wall_3.png"
 
 
 };
