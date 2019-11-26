@@ -288,7 +288,7 @@ class GameLayer extends Layer {
         {
             this.menuMuerte.dibujar(this.scrollX);
         }
-
+ 
 
         this.powerups.forEach( powerup => powerup.dibujar());
 
