@@ -71,7 +71,7 @@ class Enemigo extends Modelo {
     calcularDireccion(){
         var tempI = Math.floor(this.y / 32);
         var tempJ = Math.floor(this.x / 32 );
-
+        (tempJ < 0)? tempJ = 0: tempJ = tempJ;
         var posicionActual = this.mapa[tempI][tempJ];
 
         if (this.mapa.length >= tempI + 1 && this.mapa[tempI + 1][tempJ] < posicionActual && this.mapa[tempI + 1][tempJ] != -1)

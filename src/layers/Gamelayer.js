@@ -54,7 +54,19 @@ class GameLayer extends Layer {
                 this.ataques.splice(this.ataques.indexOf(elAtaque), 1);
             else
                 elAtaque.actualizar();
-        })
+        });
+
+        //colisiones destruible
+        for( i = 0; i < this.ataques.length; i++){
+            for( j = 0; j< this.destruibles.length; j++)
+            {
+                if(this.ataques[i].colisiona(this.destruibles[j]))
+                {
+                    this.destruibles[j].loHanGolpeado();
+                    this.espacios.eliminarCuerpoEstatico(this.destruibles[j]);
+                }
+            }
+        }
 
         this.destruibles.forEach( destruible =>
             (destruible.estado == estados.finAnimacion ?
@@ -75,14 +87,7 @@ class GameLayer extends Layer {
         this.fondo.vx = -1;
         this.jugador.mapa = this.mapa.mapaEsquema;
         this.jugador.actualizar()
-        this.enemigos.forEach(theEnemigo => {
-            theEnemigo.mapa= this.mapa.mapaEsquema;
-            if(theEnemigo.estado == estados.muerto)
-            {
-                this.enemigos.splice(this.enemigos.indexOf(theEnemigo), 1)
-            }
-            theEnemigo.actualizar();
-        });
+
 
         //colisiones ataque-enemigo
         var i,j;
@@ -116,17 +121,6 @@ class GameLayer extends Layer {
             }
         }
 
-        //colisiones destruible
-        for( i = 0; i < this.ataques.length; i++){
-            for( j = 0; j< this.destruibles.length; j++)
-            {
-                if(this.ataques[i].colisiona(this.destruibles[j]))
-                {
-                    this.destruibles[j].loHanGolpeado()
-                    this.espacios.eliminarCuerpoEstatico(this.destruibles[j]);
-                }
-            }
-        }
 
         //Activacion de triggers
         for( i = 0; i< this.triggers.length; i++)
@@ -147,6 +141,14 @@ class GameLayer extends Layer {
             }});
 
 
+        this.enemigos.forEach(theEnemigo => {
+            theEnemigo.mapa= this.mapa.mapaEsquema;
+            if(theEnemigo.estado == estados.muerto)
+            {
+                this.enemigos.splice(this.enemigos.indexOf(theEnemigo), 1)
+            }
+            theEnemigo.actualizar();
+        });
         //colisiones powerup
         for(i = 0; i< this.powerups.length; i++){
 
@@ -179,6 +181,7 @@ class GameLayer extends Layer {
             }
 
         }
+
 
 
 

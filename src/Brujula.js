@@ -97,7 +97,7 @@ class Brujula {
 
 
             });
-            proximaProfundida = proximaProfundida.filter(x=> x.depth < 3 );
+            proximaProfundida = proximaProfundida.filter(x=> x.depth <= 3 );
             proximaProfundida = proximaProfundida.filter(x => x != this.inicio);
             listaNodosAActualizar = proximaProfundida;
 
@@ -107,7 +107,7 @@ class Brujula {
     generarSala(posicion, laSala){
 
         var siguienteSala;
-        var numerSala =(laSala.depth == this.maxDepth)? "depth/1" : Math.floor((Math.random()*4)+1);
+        var numerSala =(laSala.depth == 3)? "depth/1" : Math.floor((Math.random()*4)+1);
         switch (posicion){
             case posicionSala.izquierda:
                 siguienteSala = new Sala(false, laSala, posicionSala.izquierda, "Derecha/" + numerSala +".txt",laSala.depth + 1);
