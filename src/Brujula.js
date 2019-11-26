@@ -1,5 +1,5 @@
 class Sala{
-    constructor(jugador, anteriorSala, entradaAnterior, mapa, depth){
+    constructor(jugador, anteriorSala, entradaAnterior, mapa, depth, id){
         this.jugador = jugador;
         this.anteriorSala = anteriorSala;
         this.entradaAnteriorSala = entradaAnterior;
@@ -9,6 +9,7 @@ class Sala{
         this.abajo = null;
         this.depth = depth;
         this.mapa = mapa;
+        this.id = id;
 
         this.setAnteriorSala()
     }
@@ -57,11 +58,14 @@ class Brujula {
         this.listaSalas = [];
         this.inicio;
         this.generarMapa();
+        this.counterId;
         this.maxDepth = 2;
     }
 
     generarMapa(){
-        this.salaActual = new Sala(true,NaN, NaN, "0.txt", 0 );
+        this.counterId = 1;
+        this.salaActual = new Sala(true,NaN, NaN, "0.txt", 0 ,this.counterId);
+        this.counterId++;
         var listaNodosAActualizar = [this.salaActual];
         this.inicio = this.salaActual;
         while (listaNodosAActualizar.length > 0)
@@ -110,20 +114,21 @@ class Brujula {
         var numerSala =(laSala.depth == 3)? "depth/1" : Math.floor((Math.random()*4)+1);
         switch (posicion){
             case posicionSala.izquierda:
-                siguienteSala = new Sala(false, laSala, posicionSala.izquierda, "Derecha/" + numerSala +".txt",laSala.depth + 1);
+                siguienteSala = new Sala(false, laSala, posicionSala.izquierda, "Derecha/" + numerSala +".txt",laSala.depth + 1,this.counterId);
                 break;
             case posicionSala.derecha:
-                siguienteSala = new Sala(false, laSala, posicionSala.derecha, "Izquierda/" + numerSala + ".txt",laSala.depth + 1);
+                siguienteSala = new Sala(false, laSala, posicionSala.derecha, "Izquierda/" + numerSala + ".txt",laSala.depth + 1,this.counterId);
                 break;
             case posicionSala.arriba:
-                siguienteSala = new Sala(false, laSala, posicionSala.arriba, "Abajo/" + numerSala + ".txt",laSala.depth + 1);
+                siguienteSala = new Sala(false, laSala, posicionSala.arriba, "Abajo/" + numerSala + ".txt",laSala.depth + 1,this.counterId);
                 break;
             case posicionSala.abajo:
-                siguienteSala = new Sala(false, laSala, posicionSala.abajo, "Arriba/" + numerSala + ".txt",laSala.depth + 1);
+                siguienteSala = new Sala(false, laSala, posicionSala.abajo, "Arriba/" + numerSala + ".txt",laSala.depth + 1,this.counterId);
                 break;
 
 
         }
+        this.counterId++;
         return siguienteSala;
 
     }

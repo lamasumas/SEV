@@ -44,7 +44,7 @@ class GameLayer extends Layer {
         }
 
         //this.calcularScroll();
-        this.mapa.updateMap(this.jugador, this.obstaculos);
+        this.mapa.updateMap(this.jugador, this.obstaculos, this.destruibles);
 
 
         this.espacios.getEstaticos().forEach( x => x.actualizar());
@@ -89,22 +89,25 @@ class GameLayer extends Layer {
         this.jugador.actualizar()
 
 
-        //colisiones ataque-enemigo
+        //colisiones ataque-enemigo o ataque-jugador
         var i,j;
         for( i = 0; i < this.ataques.length; i++){
-            for( j = 0; j< this.enemigos.length; j++)
+            if (this.ataques[i].objetoASeguir.mapType =="P")
             {
-                if(this.ataques[i].colisiona(this.enemigos[j]) && this.enemigos[j].invencibilidad <= 0)
+                for( j = 0; j< this.enemigos.length; j++)
                 {
-                    this.enemigos[j].vida -= this.ataques[i].dano;
-                    this.enemigos[j].invencibilidad = 10;
-                    if(this.enemigos[j].vida <=0) {
-                        this.enemigos[j].estado = estados.muriendo;
-                        this.espacios.eliminarCuerpoDinamico(this.enemigos[j]);
+                    if(this.ataques[i].colisiona(this.enemigos[j]) && this.enemigos[j].invencibilidad <= 0)
+                    {
+                        this.enemigos[j].vida -= this.ataques[i].dano;
+                        this.enemigos[j].invencibilidad = 10;
+                        if(this.enemigos[j].vida <=0) {
+                            this.enemigos[j].estado = estados.muriendo;
+                            this.espacios.eliminarCuerpoDinamico(this.enemigos[j]);
+                        }
                     }
-                }
 
-            }
+                }
+                }
         }
 
         //colisiones ataque-obstaculo
@@ -115,6 +118,7 @@ class GameLayer extends Layer {
                     if(this.ataques[i].colisiona(this.obstaculos[j]))
                     {
                         this.ataques.splice(i,1);
+                        break;
                     }
 
                 }
@@ -338,24 +342,46 @@ class GameLayer extends Layer {
                 this.espacios.agregarCuerpoDinamico(enemigoVolador);
                 break;
             case "R":
-                var teleport = new Teletransporte(x +10, y +12, imagenes.vacio, posicionSala.derecha);
-                this.teletransportes.push(teleport);
+                if(brujula.salaActual.derecha != null) {
+                    var teleport = new Teletransporte(x + 10, y + 12, imagenes.vacio, posicionSala.derecha);
+                    this.teletransportes.push(teleport);
+                }
+                else
+                {
+                    this.cargarObjetoMapa("W",x,y)
+                }
                 break;
             case "L":
+                if(brujula.salaActual.izquierda != null) {
                 var teleport = new Teletransporte(x - 10, y +12, imagenes.vacio, posicionSala.izquierda);
                 this.teletransportes.push(teleport);
+                }
+                else
+                {
+                  this.cargarObjetoMapa("W",x,y)
+                }
                 break;
             case "U":
-                var teleport = new Teletransporte(x + 12, y - 5 , imagenes.vacio, posicionSala.arriba);
-                this.teletransportes.push(teleport);
+
+                if(brujula.salaActual.arriba != null) {
+                    var teleport = new Teletransporte(x + 12, y - 5, imagenes.vacio, posicionSala.arriba);
+                    this.teletransportes.push(teleport);
+                }else{
+                    this.cargarObjetoMapa("W",x,y)
+                }
                 break;
             case "A":
+                if(brujula.salaActual.abajo != null){
                 var teleport = new Teletransporte(x + 12, y + 20, imagenes.vacio, posicionSala.abajo);
                 this.teletransportes.push(teleport);
+                }else{
+                    this.cargarObjetoMapa("W",x,y)
+                }
                 break;
             case "T":
                 var torch = new  BloqueAnimado(imagenes.torch, x+12, y+12, imagenes.torch);
                 this.bloquesAnimados.push(torch);
+
                 break;
             case "W":
                 var aleatorio = Math.floor((Math.random()*3) +1);

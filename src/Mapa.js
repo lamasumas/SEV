@@ -26,8 +26,9 @@ class Mapa{
     }
 
 
-    updateMap(jugador, obstaculos) {
+    updateMap(jugador, obstaculos, destruibles) {
         this.mapaEsquema = new Array(this.altoMapa + 1);
+        obstaculos = obstaculos.concat(destruibles)
         this.player = {};
         for (var i = 0; i < this.mapaEsquema.length; i++)
             this.mapaEsquema[i] = new Array(Math.floor(this.anchoMapa )).fill(0);

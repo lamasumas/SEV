@@ -4,6 +4,7 @@ class Bloque_Destruible extends Bloque {
         this.aRoto = new Animacion(tiles, anchoT, altoT, velocidad,frames,this.roto.bind(this))
         this.aVacio = new Animacion(imagenes.vacio,32, 32, 1, 1);
         this.golpeado = false;
+        this.mapType = -1
         this.estado = estados.normal;
         this.animacion;
     }

@@ -1,6 +1,6 @@
  class EnemigoVolador extends Enemigo {
 
-     constructor(x,y, imagen, derecha_izquierda) {
+     constructor(x,y, imagen, derecha_izquierda, jugador, generarAtaqueCallback) {
          super(x, y, imagen);
         this.vyInteligencia = 0;
          this.aMoverDerecha = new Animacion(imagenes.volador_movimiento,32,32,2,4);
@@ -11,6 +11,9 @@
          this.derecha_izquierda = derecha_izquierda;
          this.animacion  = this.aMoverDerecha;
          this.mapType= "V"
+         this.jugador = jugador;
+         this.generarAtaqueCallback = generarAtaqueCallback;
+         this.counterAtaque = 0
 
 
      }
@@ -38,6 +41,8 @@
              this.vyInteligencia = -1;
          else if (tempI <= 0)
              this.vyInteligencia = 1;
+
+
      }
 
 

@@ -9,7 +9,7 @@ class Cofre extends Modelo{
         this.estado = estados.normal
         this.generarEnemigo = genrarEnemigo;
         this.generarPowerup = generarpowerUp
-        if( cofresAbiertos.filter(x => x != brujula.salaActual.mapa).length != 0) {
+        if( cofresAbiertos.filter(x => x == brujula.salaActual.id).length != 0) {
             this.animacion= this.aVacio;
             this.estado = estados.finAnimacion;
         }
@@ -28,7 +28,6 @@ class Cofre extends Modelo{
         this.animacion.dibujar(this.x - scrollX, this.y)
     }
     generateObject(){
-            cofresAbiertos.push(this)
             this.animacion = this.aVacio;
             this.estado = estados.finAnimacion;
             var posibiliadad = Math.floor(Math.random() * 3);
@@ -48,10 +47,10 @@ class Cofre extends Modelo{
 
     onTrigger(){
 
-        if( cofresAbiertos.filter(x => x != brujula.salaActual.mapa).length == 0)
+        if( cofresAbiertos.filter(x => x != brujula.salaActual.id).length == 0)
         {
             this.animacion = this.aAbierto;
-            cofresAbiertos.push(brujula.salaActual.mapa);
+            cofresAbiertos.push(brujula.salaActual.id);
         }
 
     }
