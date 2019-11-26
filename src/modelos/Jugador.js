@@ -150,27 +150,27 @@ class Jugador extends Modelo {
             if (controles.atacarDerecha) {
                 var ataque = new Ataque(22, 0 , imagenes.jugador_ataque_derecha, imagenes.flecha_derecha, this,lanzarFlecha);
                 this.ataqueCallback(ataque);
-                this.counterAtaque = 30;
+                this.counterAtaque = 15;
                 (lanzarFlecha)?this.flechas--:this.flechas=0;
 
             }
             else if (controles.atacarIzuierda){
                 var ataque = new Ataque(-22, 0, imagenes.jugador_ataque_izquierda,imagenes.flecha_izquierda ,this, lanzarFlecha);
                 this.ataqueCallback(ataque);
-                this.counterAtaque = 30;
+                this.counterAtaque = 15;
                 (lanzarFlecha)?this.flechas--:this.flechas=0;
 
             }
             else if(controles.atacarAbajo){
                 var ataque = new Ataque(0 , 22, imagenes.jugador_ataque_abajo,imagenes.flecha_abajo, this, lanzarFlecha);
                 this.ataqueCallback(ataque);
-                this.counterAtaque = 30;
+                this.counterAtaque = 15;
                 (lanzarFlecha)?this.flechas--:this.flechas=0;
             }
             else if(controles.atacarArriba){
                 var ataque = new Ataque(0 , -22, imagenes.jugador_ataque_arriba,imagenes.flecha_arriba, this, lanzarFlecha);
                 this.ataqueCallback(ataque);
-                this.counterAtaque = 30;
+                this.counterAtaque = 15;
                 (lanzarFlecha)?this.flechas--:this.flechas=0;
 
             }

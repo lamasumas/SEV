@@ -38,8 +38,7 @@ class Modelo {
             && modelo.x + modelo.ancho/2 >= this.x - this.ancho/2
             && this.y + this.alto/2 >= modelo.y - modelo.alto/2
             && this.y - this.alto/2 <= modelo.y + modelo.alto/2 ){
-
-            colisiona = true;
+                colisiona = true;
 
         }
         return colisiona;

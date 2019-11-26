@@ -19,6 +19,8 @@ class Teletransporte extends Modelo {
             case posicionSala.izquierda:
                 brujula.moverIzquierda();
                 break;
+            case posicionSala.bossBatle:
+                brujula.irAlBoss();
 
         }
 

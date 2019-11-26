@@ -7,6 +7,8 @@ estados.disparando = 6;
 estados.impactado = 7;
 estados.finAnimacion = 8;
 estados.normal = 9;
+estados.empujando = 10;
+estados.victoria = 11;
 
 var orientaciones = {};
 orientaciones.derecha = 2;
@@ -36,6 +38,7 @@ posicionSala.derecha = 0;
 posicionSala.izquierda = 1;
 posicionSala.arriba = 2;
 posicionSala.abajo = 3;
+posicionSala.bossBatle = 4;
 
 var brujula = new Brujula();
 var cofresAbiertos = [];

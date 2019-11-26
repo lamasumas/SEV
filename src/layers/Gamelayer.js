@@ -9,6 +9,7 @@ class GameLayer extends Layer {
     iniciar() {
         this.scrollX = 0;
         controles.pausa = false;
+        this.victoria = false;
         this.scrollY = 0;
         this.fondo = new Fondo(imagenes.fondo, 480 * 0.5, 320 * 0.5);
         this.jugador ;
@@ -27,20 +28,43 @@ class GameLayer extends Layer {
         this.cargarMapa("res/mapas/"+ brujula.getNombreMapaActual(), 1);
         this.mapa;
         this.pausa = new Fondo(imagenes.pausa, 420/1.8, 320 /2.2);
+        this.menuVictoria = new Fondo(imagenes.menu_victoria, 420/1.8, 320 /2.2);
         this.menuMuerte = new FondoAnimado(imagenes.menu_muerte_estatico, imagenes.menu_muerte,
             420/1.8,320/2.2, 120, 125, 4, 6);
         this.ajustarPosicionEntrada();
+        this.counterMuerte= 10;
+        this.cofreIdGenerator = 1;
+
     }
 
 
     actualizar (){
-        if(controles.pausa)
+        if(controles.pausa && !this.victoria)
             return;
 
         if (this.jugador.vidas == 0)
         {
             this.menuMuerte.actualizar();
+            if(teclas.length > 0 && this.counterMuerte <=0)
+            {
+                layer = menuLayer;
+                brujula = new Brujula();
+                controles.continuar = false;
+                return;
+            }
+            this.counterMuerte--;
             return ;
+        }
+        if(this.victoria )
+        {
+            if(teclas.length > 0)
+            {
+                layer = menuLayer;
+                brujula = new Brujula();
+                controles.continuar = false;
+                return;
+            }
+
         }
 
         //this.calcularScroll();
@@ -106,6 +130,7 @@ class GameLayer extends Layer {
                         }
                     }
 
+
                 }
                 }
         }
@@ -151,7 +176,11 @@ class GameLayer extends Layer {
             {
                 this.enemigos.splice(this.enemigos.indexOf(theEnemigo), 1)
             }
-            theEnemigo.actualizar();
+            if(theEnemigo.estado == estados.victoria)
+            {
+                this.victoria = true;
+            }
+            theEnemigo.actualizar(this.jugador);
         });
         //colisiones powerup
         for(i = 0; i< this.powerups.length; i++){
@@ -171,7 +200,7 @@ class GameLayer extends Layer {
         //Teletransporte
         for(i = 0; i< this.teletransportes.length; i++)
         {
-            if(this.jugador.colisiona(this.teletransportes[i]) && brujula.salaActual.getSala(this.teletransportes[i].posicion))
+            if(this.jugador.colisiona(this.teletransportes[i]) && brujula.salaActual.getSala(this.teletransportes[i].posicion) != null)
             {
                 this.teletransportes[i].teleport();
                 var copia_vidas = this.jugador.vidas;
@@ -232,24 +261,28 @@ class GameLayer extends Layer {
 
         this.fondo.dibujar();
 
-        this.espacios.getEstaticos().forEach( x => x.dibujar())
+        this.espacios.getEstaticos().forEach( x => x.dibujar());
         this.bloquesAnimados.forEach(x => x.dibujar());
 
-        this.jugador.dibujar(this.scrollX);
+        this.teletransportes.forEach(x => x.dibujar());
 
-        this.ataques.forEach(elAtaque => elAtaque.dibujar(this.scrollX))
         this.enemigos.forEach(theEnemigo =>{
             (theEnemigo.invencibilidad > 0) ? contexto.globalAlpha = 0.5: contexto.globalAlpha=1;
-            theEnemigo.dibujar(this.scrollX)
+            theEnemigo.dibujar(this.scrollX);
             contexto.globalAlpha = 1;
         });
+        this.jugador.dibujar(this.scrollX);
+        this.ataques.forEach(elAtaque => elAtaque.dibujar(this.scrollX));
         this.destruibles.forEach(destruible => destruible.dibujar(this.scrollX));
 
 
-
-        if(controles.pausa)
+        if(controles.pausa && !this.victoria)
         {
             this.pausa.dibujar();
+        }
+        if(this.victoria)
+        {
+            this.menuVictoria.dibujar();
         }
         if (this.jugador.vidas == 0)
         {
@@ -321,11 +354,12 @@ class GameLayer extends Layer {
                 break;
             case "C":
                 var cofre = new Cofre(imagenes.cofre_cerrado, imagenes.cofre_abierto, imagenes.vacio, x + 12,
-                    y +12,this.generarEnemigo.bind(this), this.generarPowerup.bind(this));
+                    y +12,this.generarEnemigo.bind(this), this.generarPowerup.bind(this), this.cofreIdGenerator);
                 var theTrigger = new Trigger(x +12 , y+36, cofre);
                 this.triggers.push(theTrigger);
                 this.cofres.push(cofre);
                 this.espacios.agregarCuerpoEstatico(cofre);
+                this.cofreIdGenerator++;
                 break;
             case "P":
                 var elPowerup = new PowerUp(powerup.dano, x +12, y+12, this.jugador);
@@ -396,6 +430,14 @@ class GameLayer extends Layer {
                 this.obstaculos.push(wall)
                 this.espacios.agregarCuerpoEstatico(wall);
                 break;
+            case "N":
+                var entradaBoss = new Teletransporte(x + 12, y +12, imagenes.escaleras, posicionSala.bossBatle);
+                this.teletransportes.push(entradaBoss);
+                break;
+            case "F":
+                var boss = new Boss(x+12, y+12,imagenes.boss_idle);
+                this.enemigos.push(boss);
+                this.espacios.agregarCuerpoDinamico(boss);
 
 
         }

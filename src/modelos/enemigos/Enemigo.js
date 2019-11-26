@@ -76,52 +76,32 @@ class Enemigo extends Modelo {
 
         if (this.mapa.length >= tempI + 1 && this.mapa[tempI + 1][tempJ] < posicionActual && this.mapa[tempI + 1][tempJ] != -1)
         {
-            if(posicionActual == 1)
-            {
-                //golpear abajo
-            }
-            else {
-                this.vy = 2;
 
-                this.vxInteligencia = 1;
-            }
+            this.vy = 2;
+            this.vxInteligencia = 1;
+
         }
 
         if (0 <= tempI - 1 && this.mapa[tempI - 1][tempJ] < posicionActual && this.mapa[tempI - 1][tempJ] != -1)
         {
-            if(posicionActual == 1)
-            {
-                //golpear arriba
-            }
-            else {
-                this.vy = -2;
-                this.vxInteligencia = -1;
-            }
+
+            this.vy = -2;
+            this.vxInteligencia = -1;
+
         }
          if (this.mapa[tempI].length >= tempJ + 1 && this.mapa[tempI][tempJ + 1] < posicionActual && this.mapa[tempI  ][tempJ +1] != -1)
         {
-            if(posicionActual == 1)
-            {
-                //golpear derecha
-            }
-            else {
-                this.vx = 2;
-                this.vxInteligencia = 1;
-            }
+
+            this.vx = 2;
+            this.vxInteligencia = 1;
+
         }
          if (0 <= tempJ - 1 && this.mapa[tempI][tempJ - 1] < posicionActual && this.mapa[tempI][tempJ -1] != -1) {
-            if(posicionActual == 1)
-            {
-                //golpear izquierda.
-            }
-            else {
-                this.vx = -2;
-                this.vxInteligencia = -1;
-            }
+
+            this.vx = -2;
+            this.vxInteligencia = -1;
+
         }
-    //    console.log("Enemigo: ["+ tempI +", " +tempJ+"] - Posicion: "+ posicionActual);
-
-
     }
 
     dibujar (scrollX){

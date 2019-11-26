@@ -29,6 +29,7 @@ class Sala{
                 this.abajo = this.anteriorSala;
                 break;
 
+
         }
     }
 
@@ -46,6 +47,9 @@ class Sala{
             case posicionSala.abajo:
                 return this.abajo;
                 break;
+            case  posicionSala.bossBatle:
+                return this;
+
 
 
         }
@@ -164,6 +168,10 @@ class Brujula {
         this.salaActual = this.salaActual.derecha;
         this.salaActual.entradaAnteriorSala = posicionSala.derecha;
         this.salaActual.jugador = true;
+    }
+
+    irAlBoss(){
+        this.salaActual =  new Sala(this.salaActual.jugador, this.salaActual, posicionSala.bossBatle, "Boss.txt",5, this.counterId++);
     }
 
 

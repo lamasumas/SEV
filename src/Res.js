@@ -45,7 +45,16 @@ var imagenes = {
     wall_2: "res/tiles/wall/wall_2.png",
     wall_3: "res/tiles/wall/wall_3.png",
     fondo_menu: "res/ui (new)/fondoMenu.png",
-    menu_info: "res/ui (new)/InfoMenu.png"
+    menu_info: "res/ui (new)/InfoMenu.png",
+    escaleras: "res/props_itens/escaleras.png",
+    boss_idle: "res/enemies/floating_skull_enemy/boss_idle1.png",
+    boss_idle_izquierda: "res/enemies/floating_skull_enemy/boss_idle1_izquierda.png",
+    boss_idle: "res/enemies/floating_skull_enemy/boss_idle1.png",
+    boss_basico: "res/enemies/floating_skull_enemy/boss_ataqueBasico.png",
+    boss_basico_izquierda: "res/enemies/floating_skull_enemy/boss_ataqueBasico_izquierda.png",
+    boss_muerte:"res/enemies/floating_skull_enemy/boss_muerte.png",
+    boss_muerte_izquierda:"res/enemies/floating_skull_enemy/boss_muerte_izquierda.png",
+    menu_victoria: "res/ui (new)/menu_victoria.png"
 
 
 };
