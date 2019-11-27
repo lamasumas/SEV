@@ -2,7 +2,6 @@ class GameLayer extends Layer {
 
     constructor() {
         super();
-
         this.iniciar();
     }
 
@@ -12,7 +11,6 @@ class GameLayer extends Layer {
         this.victoria = false;
         this.scrollY = 0;
         this.fondo = new Fondo(imagenes.fondo, 480 * 0.5, 320 * 0.5);
-        this.jugador ;
         this.espacios = new Espacio(0);
         this.enemigos = [];
         this.ataques = [];
@@ -34,7 +32,9 @@ class GameLayer extends Layer {
         this.ajustarPosicionEntrada();
         this.counterMuerte= 10;
         this.cofreIdGenerator = 1;
-
+        reproducirMusica();
+        this.muerteEffect = false;
+        this.victoriaEffecto = false;
     }
 
 
@@ -42,23 +42,31 @@ class GameLayer extends Layer {
         if(controles.pausa && !this.victoria)
             return;
 
-        if (this.jugador.vidas == 0)
+        if (this.jugador.vidas == 0 )
         {
+            if(!this.muerteEffect)
+                 reproducirEfecto(efectos.muerte_jugador);
             this.menuMuerte.actualizar();
             if(teclas.length > 0 && this.counterMuerte <=0)
             {
+                pararMusica();
                 layer = menuLayer;
                 brujula = new Brujula();
                 controles.continuar = false;
                 return;
             }
             this.counterMuerte--;
+            this.muerteEffect = true;
             return ;
         }
         if(this.victoria )
         {
+            if(!this.victoriaEffecto)
+                reproducirEfecto(efectos.vicotria);
+
             if(teclas.length > 0)
             {
+                pararMusica();
                 layer = menuLayer;
                 brujula = new Brujula();
                 controles.continuar = false;
@@ -191,7 +199,7 @@ class GameLayer extends Layer {
             }
             if(this.powerups[i].borrar == true)
             {
-                this.powerups[i].effecto();
+                this.powerups[i].effecto(this.jugador);
                 this.powerups.splice(i,1)
 
             }
@@ -203,13 +211,7 @@ class GameLayer extends Layer {
             if(this.jugador.colisiona(this.teletransportes[i]) && brujula.salaActual.getSala(this.teletransportes[i].posicion) != null)
             {
                 this.teletransportes[i].teleport();
-                var copia_vidas = this.jugador.vidas;
-                var copia_dano = this.jugador.dano;
-                var copia_flechas = this.jugador.flechas;
-                this.iniciar();
-                this.jugador.vidas = copia_vidas;
-                this.jugador.flechas = copia_flechas;
-                this.jugador.dano = copia_dano;
+                this.cambiarMapa(this.jugador.dano,this.jugador.flechas, this.jugador.vidas)
                 break;
             }
 
@@ -221,6 +223,14 @@ class GameLayer extends Layer {
 
 
         this.contadorFlechasNumeros.valor= this.jugador.flechas;
+    }
+    cambiarMapa(dano, flechas, vida){
+
+        this.iniciar();
+        this.jugador.vidas = vida;
+        this.jugador.flechas = flechas;
+        this.jugador.dano = dano;
+
     }
     ajustarPosicionEntrada() {
         if (brujula.salaActual.entradaAnteriorSala != NaN) {
@@ -466,6 +476,7 @@ class GameLayer extends Layer {
     generarAtaque(ataque){
 
         this.ataques.push(ataque);
+        (ataque.flecha)?reproducirEfecto(efectos.flecha): reproducirEfecto(efectos.espada);
     }
     generarEnemigo(x,y)
     {

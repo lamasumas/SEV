@@ -36,7 +36,7 @@ class PowerUp extends Modelo{
         this.counterStarted = true;
     }
 
-    effecto() {
+    effecto(jugador) {
         switch (this.opcion){
             case powerup.arco:
                 this.jugador.flechas += 5;
@@ -45,7 +45,7 @@ class PowerUp extends Modelo{
                 this.jugador.vidas++;
                 break;
             case powerup.dano:
-                this.jugador.dano++;
+                jugador.dano++;
                 break;
         }
         this.borrar = true;

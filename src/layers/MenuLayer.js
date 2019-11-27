@@ -33,6 +33,7 @@ class MenuLayer extends Layer {
 
 
     procesarControles() {
+
         // siguiente pantalla
         if (controles.continuar) {
             gameLayer = new GameLayer();
