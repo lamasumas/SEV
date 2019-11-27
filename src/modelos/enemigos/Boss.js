@@ -10,7 +10,7 @@ class Boss extends Enemigo{
         this.animacion = this.aMoverDerecha;
         this.aMorirIzquierda =  new Animacion(imagenes.boss_muerte_izquierda,60,60,4,4, this.finDeAnimacionMorir.bind(this));
         this.aMorirDerecha =  new Animacion(imagenes.boss_muerte,60,60,4,4, this.finDeAnimacionMorir.bind(this));
-        this.vida = 2;
+        this.vida = 10;
         this.derecha_izquierda = derecha_izquierda;
         this.counterEmpujon= 30;
         this.empujonDistancia= 0;

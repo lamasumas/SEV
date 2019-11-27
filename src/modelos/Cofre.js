@@ -9,11 +9,11 @@ class Cofre extends Modelo{
         this.estado = estados.normal
         this.generarEnemigo = genrarEnemigo;
         this.generarPowerup = generarpowerUp
+        this.cofreId = cofreId;
         if( cofresAbiertos.filter(x => x == brujula.salaActual.id +"-"+ this.cofreId).length != 0) {
             this.animacion= this.aVacio;
             this.estado = estados.finAnimacion;
         }
-        this.cofreId = cofreId;
 
     }
 
@@ -48,7 +48,7 @@ class Cofre extends Modelo{
 
     onTrigger(){
 
-        if( cofresAbiertos.filter(x => x == (brujula.salaActual.id +"-"+ this.cofreId).length == 0))
+        if( cofresAbiertos.filter(x => x == (brujula.salaActual.id +"-"+ this.cofreId)).length == 0)
         {
             this.animacion = this.aAbierto;
             cofresAbiertos.push(brujula.salaActual.id+ "-"+this.cofreId);
