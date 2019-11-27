@@ -116,6 +116,11 @@ class Brujula {
 
         var siguienteSala;
         var numerSala =(laSala.depth == 3)? "depth/1" : Math.floor((Math.random()*4)+1);
+        var mapaAnteriorSala = (laSala.mapa.split("/").length > 1)? parseInt(laSala.mapa.split("/")[1]): 0;
+        while(numerSala == mapaAnteriorSala)
+        {
+             numerSala =(laSala.depth == 3)? "depth/1" : Math.floor((Math.random()*4)+1);
+        }
         switch (posicion){
             case posicionSala.izquierda:
                 siguienteSala = new Sala(false, laSala, posicionSala.izquierda, "Derecha/" + numerSala +".txt",laSala.depth + 1,this.counterId);
