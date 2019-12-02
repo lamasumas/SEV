@@ -1,10 +1,16 @@
 class GameLayer extends Layer {
-
+    /**
+     *
+     * Constructor
+     */
     constructor() {
         super();
         this.iniciar();
     }
 
+    /**
+     * Funcion que inicializa todas las variables
+     */
     iniciar() {
         this.scrollX = 0;
         controles.pausa = false;
@@ -22,6 +28,8 @@ class GameLayer extends Layer {
         this.teletransportes = [];
         this.bloquesAnimados =[];
         this.contadorFlechas = new Fondo(imagenes.powerup_flechas,400,20);
+        this.contadorDaños = new Fondo(imagenes.powerup_daño,350, 20);
+        this.contadorDañosNumero = new Texto(0,370,28);
         this.contadorFlechasNumeros = new Texto(0, 420,28);
         this.cargarMapa("res/mapas/"+ brujula.getNombreMapaActual(), 1);
         this.mapa;
@@ -38,10 +46,15 @@ class GameLayer extends Layer {
     }
 
 
+    /**
+     * Funcion que se llama en cada frame
+     */
     actualizar (){
+        //Control de pausa
         if(controles.pausa && !this.victoria)
             return;
 
+        //Control de menu de muerte
         if (this.jugador.vidas == 0 )
         {
             if(!this.muerteEffect)
@@ -59,6 +72,8 @@ class GameLayer extends Layer {
             this.muerteEffect = true;
             return ;
         }
+
+        //Control de menu de victoria
         if(this.victoria )
         {
             if(!this.victoriaEffecto)
@@ -75,12 +90,13 @@ class GameLayer extends Layer {
 
         }
 
-        //this.calcularScroll();
+        //Llama a actualizar el waveframe, para los enemigos
         this.mapa.updateMap(this.jugador, this.obstaculos, this.destruibles, this.cofres);
 
-
+        //Actualizacion de los espacios estaticos
         this.espacios.getEstaticos().forEach( x => x.actualizar());
 
+        //Actualizacion de un ataque, para borrarlo si a acabado
         this.ataques.forEach(elAtaque =>  {
             if(elAtaque.estado == estados.finAnimacion)
                 this.ataques.splice(this.ataques.indexOf(elAtaque), 1);
@@ -88,7 +104,7 @@ class GameLayer extends Layer {
                 elAtaque.actualizar();
         });
 
-        //colisiones destruible
+        //Destruir un objeto destruible si colisiona con un ataque
         for( i = 0; i < this.ataques.length; i++){
             for( j = 0; j< this.destruibles.length; j++)
             {
@@ -99,13 +115,17 @@ class GameLayer extends Layer {
                 }
             }
         }
-
+        //Si acabo la animacion del objeto destruible se borra
         this.destruibles.forEach( destruible =>
             (destruible.estado == estados.finAnimacion ?
                 this.destruibles.splice(this.destruibles.indexOf(destruible),1):destruible.actualizar()))
+        //Se actualizan los espacions (fisicas)
         this.espacios.actualizar();
+        //Los bloques estaticos animados se actualizan
         this.bloquesAnimados.forEach(x => x.actualizar());
 
+
+        //Eliminar el cofre si abierto
         for(i = 0; i< this.cofres.length; i++)
         {
             if(this.cofres[i].estado == estados.finAnimacion)
@@ -115,13 +135,13 @@ class GameLayer extends Layer {
             }
         }
 
-      //  this.espacio.actualizar();
         this.fondo.vx = -1;
+        //Actualizar la posicion del jugador en el wavefront
         this.jugador.mapa = this.mapa.mapaEsquema;
         this.jugador.actualizar()
 
 
-        //colisiones ataque-enemigo o ataque-jugador
+        //colisiones ataque-enemigo o ataque-jugador, si colisionan se elimina
         var i,j;
         for( i = 0; i < this.ataques.length; i++){
             if (this.ataques[i].objetoASeguir.mapType =="P")
@@ -143,7 +163,7 @@ class GameLayer extends Layer {
                 }
         }
 
-        //colisiones ataque-obstaculo
+        //Si colisiona un ataque con un obstaculo, se elimina el ataque
         {
             for( i = 0; i < this.ataques.length; i++){
                 for( j = 0; j< this.obstaculos.length; j++)
@@ -169,7 +189,7 @@ class GameLayer extends Layer {
             }
         }
 
-      //colisiones enemigo-jugador
+      //Si un enemigo colisiona con el jugador, el jugador pierde una vida
         this.enemigos.forEach( theEnemigo => {
             if (theEnemigo.colisiona(this.jugador) && this.jugador.invencibilidad <=0 &&
                 (theEnemigo.estado != estados.muriendo && theEnemigo.estado != estados.muerto)) {
@@ -178,6 +198,7 @@ class GameLayer extends Layer {
             }});
 
 
+        //Se actualiza la version del waveframe de los enemigos, y se actualiza
         this.enemigos.forEach(theEnemigo => {
             theEnemigo.mapa= this.mapa.mapaEsquema;
             if(theEnemigo.estado == estados.muerto)
@@ -190,7 +211,8 @@ class GameLayer extends Layer {
             }
             theEnemigo.actualizar(this.jugador);
         });
-        //colisiones powerup
+
+        //colisiones powerup-jugador
         for(i = 0; i< this.powerups.length; i++){
 
             if(this.powerups[i].colisiona(this.jugador)){
@@ -205,7 +227,7 @@ class GameLayer extends Layer {
             }
         }
 
-        //Teletransporte
+        //Colisiones con los teletransportes
         for(i = 0; i< this.teletransportes.length; i++)
         {
             if(this.jugador.colisiona(this.teletransportes[i]) && brujula.salaActual.getSala(this.teletransportes[i].posicion) != null)
@@ -217,13 +239,17 @@ class GameLayer extends Layer {
 
         }
 
-
-
-
-
-
+        //Actualizar los contadores
         this.contadorFlechasNumeros.valor= this.jugador.flechas;
+        this.contadorDañosNumero.valor = this.jugador.dano;
     }
+
+    /**
+     * Se realiza una copia en el cambio de mapa del daño del jugador, la vida y la flechas
+     * @param dano del jugaor
+     * @param flechas del jugador
+     * @param vidadel jugador
+     */
     cambiarMapa(dano, flechas, vida){
 
         this.iniciar();
@@ -232,6 +258,11 @@ class GameLayer extends Layer {
         this.jugador.dano = dano;
 
     }
+
+    /**
+     * Ajusta la posicion del jugador al entrar en una sala, para que no colisione con el teletransporte,
+     * y entre en un bucle infinto del que no pueda salir y no pueda seguir jugando a este juego favuloso.
+     */
     ajustarPosicionEntrada() {
         if (brujula.salaActual.entradaAnteriorSala != NaN) {
 
@@ -265,17 +296,17 @@ class GameLayer extends Layer {
 
     }
 
+    /**
+     * Actualiza la informacion visual en pantalla (animacion, volver a ppintar objetos)
+     */
     dibujar() {
 
-        //this.calcularScroll();
-
         this.fondo.dibujar();
-
         this.espacios.getEstaticos().forEach( x => x.dibujar());
         this.bloquesAnimados.forEach(x => x.dibujar());
 
         this.teletransportes.forEach(x => x.dibujar());
-
+        //Pinta a los enemigos y si es golpeado, se modifica el alfa
         this.enemigos.forEach(theEnemigo =>{
             (theEnemigo.invencibilidad > 0) ? contexto.globalAlpha = 0.5: contexto.globalAlpha=1;
             theEnemigo.dibujar(this.scrollX);
@@ -284,7 +315,6 @@ class GameLayer extends Layer {
         this.jugador.dibujar(this.scrollX);
         this.ataques.forEach(elAtaque => elAtaque.dibujar(this.scrollX));
         this.destruibles.forEach(destruible => destruible.dibujar(this.scrollX));
-
 
         if(controles.pausa && !this.victoria)
         {
@@ -302,6 +332,7 @@ class GameLayer extends Layer {
 
         this.powerups.forEach( powerup => powerup.dibujar());
 
+        //Contador dinamico de vida
         contexto.globalAlpha = 0.5;
         for(var i=1; i<= this.jugador.vidas;i++)
         {
@@ -309,10 +340,16 @@ class GameLayer extends Layer {
         }
         this.contadorFlechasNumeros.dibujar();
         this.contadorFlechas.dibujar(scrollX);
+        this.contadorDaños.dibujar(scrollX);
+        this.contadorDañosNumero.dibujar();
         contexto.globalAlpha = 1;
     }
 
-
+    /**
+     * Carga el mapa del txt
+     * @param ruta
+     * @param extraSize
+     */
     cargarMapa(ruta , extraSize) {
         var fichero = new XMLHttpRequest();
         fichero.open("GET", ruta, false);
@@ -337,6 +374,12 @@ class GameLayer extends Layer {
         fichero.send(null);
     }
 
+    /**
+     * Interpreta el txt
+     * @param simbolo, objeto simbolico
+     * @param x, posicion
+     * @param y, posicion
+     */
     cargarObjetoMapa(simbolo, x, y) {
         switch(simbolo) {
 
@@ -386,6 +429,7 @@ class GameLayer extends Layer {
                 this.espacios.agregarCuerpoDinamico(enemigoVolador);
                 break;
             case "R":
+                //Si no tiene conexion con la sala de la derecha, se pinta una pared, para que parezca cerrado
                 if(brujula.salaActual.derecha != null) {
                     var teleport = new Teletransporte(x + 10, y + 12, imagenes.vacio, posicionSala.derecha);
                     this.teletransportes.push(teleport);
@@ -396,6 +440,7 @@ class GameLayer extends Layer {
                 }
                 break;
             case "L":
+                //Si no tiene conexion con la sala de la izquierda, se pinta una pared, para que parezca cerrado
                 if(brujula.salaActual.izquierda != null) {
                 var teleport = new Teletransporte(x - 10, y +12, imagenes.vacio, posicionSala.izquierda);
                 this.teletransportes.push(teleport);
@@ -406,7 +451,7 @@ class GameLayer extends Layer {
                 }
                 break;
             case "U":
-
+                //Si no tiene conexion con la sala de arriba, se pinta una pared, para que parezca cerrado
                 if(brujula.salaActual.arriba != null) {
                     var teleport = new Teletransporte(x + 12, y - 5, imagenes.vacio, posicionSala.arriba);
                     this.teletransportes.push(teleport);
@@ -415,9 +460,10 @@ class GameLayer extends Layer {
                 }
                 break;
             case "A":
+               // Si no tiene conexion con la sala de abajo, se pinta una pared, para que parezca cerrado
                 if(brujula.salaActual.abajo != null){
-                var teleport = new Teletransporte(x + 12, y + 20, imagenes.vacio, posicionSala.abajo);
-                this.teletransportes.push(teleport);
+                    var teleport = new Teletransporte(x + 12, y + 20, imagenes.vacio, posicionSala.abajo);
+                    this.teletransportes.push(teleport);
                 }else{
                     this.cargarObjetoMapa("W",x,y)
                 }
@@ -430,6 +476,7 @@ class GameLayer extends Layer {
             case "W":
                 var aleatorio = Math.floor((Math.random()*3) +1);
                 var imagenWall = imagenes.wall_1;
+                //ESscoge un tipo muro aleatorio
                 switch (aleatorio)
                 {
                     case 1: imagenWall = imagenes.wall_1; break;
@@ -441,10 +488,12 @@ class GameLayer extends Layer {
                 this.espacios.agregarCuerpoEstatico(wall);
                 break;
             case "N":
+                //Carga la sala del jefe final
                 var entradaBoss = new Teletransporte(x + 12, y +12, imagenes.escaleras, posicionSala.bossBatle);
                 this.teletransportes.push(entradaBoss);
                 break;
             case "F":
+                //Un enemigo super chungo
                 var boss = new Boss(x+12, y+12,imagenes.boss_idle);
                 this.enemigos.push(boss);
                 this.espacios.agregarCuerpoDinamico(boss);
@@ -473,11 +522,21 @@ class GameLayer extends Layer {
 
     }
 
+    /**
+     *
+     * Callback para que el jugador genere un ataque, y se modularize algo el codigo
+     * @param ataque, objeto de ataque
+     */
     generarAtaque(ataque){
-
         this.ataques.push(ataque);
         (ataque.flecha)?reproducirEfecto(efectos.flecha): reproducirEfecto(efectos.espada);
     }
+
+    /**
+     * Callback para que el cofre (trampa) genere un enemigo
+     * @param x
+     * @param y
+     */
     generarEnemigo(x,y)
     {
         var enemigo = new Enemigo(x, y, imagenes.enemigo);
@@ -485,6 +544,12 @@ class GameLayer extends Layer {
         this.enemigos.push(enemigo);
     }
 
+    /**
+     * Callback para que el cofre te genere un powerup
+     * @param opcion
+     * @param x
+     * @param y
+     */
     generarPowerup(opcion, x,y){
 
         this.powerups.push( new PowerUp(opcion,x,y, this.jugador));

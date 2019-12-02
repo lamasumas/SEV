@@ -26,10 +26,11 @@ class Bloque_Destruible extends Bloque {
     }
 
     loHanGolpeado(){
-        if(this.estado == estados.normal)
-        this.golpeado = true;
-        this.animacion = this.aRoto
-        this.estado = estados.muriendo
+        if(this.estado == estados.normal) {
+            this.golpeado = true;
+            this.animacion = this.aRoto
+            this.estado = estados.muriendo
+        }
     }
     roto(){
         this.estado = estados.finAnimacion;
