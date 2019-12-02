@@ -1,3 +1,6 @@
+/**
+ * Nodo dentro del mapa general del nivel
+ */
 class Sala{
     constructor(jugador, anteriorSala, entradaAnterior, mapa, depth, id){
         this.jugador = jugador;
@@ -14,6 +17,9 @@ class Sala{
         this.setAnteriorSala()
     }
 
+    /**
+     * Guarda una referencia a la sala anterior, para saber por donde entra el jugador, y por donde volver
+     */
     setAnteriorSala(){
         switch (this.entradaAnteriorSala) {
             case posicionSala.derecha:
@@ -56,6 +62,10 @@ class Sala{
     }
 }
 
+/**
+ * Classe que crea un objeto, que organiza,' y crea el mapa. Tambien, lleva un control sobre donde esta el jugador, y los cambios
+ * de sala
+ */
 class Brujula {
     constructor() {
         this.salaActual;
@@ -66,6 +76,9 @@ class Brujula {
         this.maxDepth = 2;
     }
 
+    /**
+     * Genera una combinacion de salas alearorias con una determinada profundidad
+     */
     generarMapa(){
         this.counterId = 1;
         this.salaActual = new Sala(true,NaN, NaN, "0.txt", 0 ,this.counterId);
@@ -78,24 +91,29 @@ class Brujula {
             listaNodosAActualizar.forEach(sala => {
 
                 var derecha = false, izquierda = false ,arriba = false ,abajo = false;
+                //Genara la sala de la izuierda, que no necesariamente se va a utilizar
                 if(sala.izquierda == null)
                 {
                     sala.izquierda = this.generarSala(posicionSala.izquierda, sala);
                     izquierda = true;
                 }
 
+                //Genara la sala de la derecha
                 if(sala.derecha == null) {
                     sala.derecha = this.generarSala(posicionSala.derecha, sala);
                     derecha = true;
                 }
+                //Genera la sala de arriba
                 if(sala.arriba == null) {
                     sala.arriba = this.generarSala(posicionSala.arriba, sala);
                     arriba = true;
                 }
+                //genera la sala de abajo
                 if(sala.abajo == null) {
                     sala.abajo = this.generarSala(posicionSala.abajo, sala);
                     abajo = true;
                 }
+                //Los mete en la proxima generacion
                 if(izquierda) proximaProfundida.push(sala.izquierda);
                 if(derecha) proximaProfundida.push(sala.derecha);
                 if(arriba) proximaProfundida.push(sala.arriba);
@@ -112,6 +130,13 @@ class Brujula {
         }
     }
 
+    /**
+     * Genera la sala en si, teneiendo en cuenta porque lugar salio de la anterior sala.
+     * Si es la profundidad maxima genera una sala pre-boss
+     * @param posicion , si esta a la izquierda, derecha ,... de la sala anterior
+     * @param laSala
+     * @returns {Sala}
+     */
     generarSala(posicion, laSala){
 
         var siguienteSala;
@@ -146,6 +171,9 @@ class Brujula {
         return this.salaActual.mapa;
     }
 
+    /**
+     * Mueve el jugador a la sala de abajo, actualizando todo lo necesario
+     */
     moverAbajo(){
         this.salaActual.jugador = false;
         this.salaActual = this.salaActual.abajo;
@@ -154,6 +182,10 @@ class Brujula {
 
     }
 
+
+    /**
+     * Mueve el jugador a la sala de arriba, actualizando todo lo necesario
+     */
     moverArriba(){
         this.salaActual.jugador = false;
         this.salaActual = this.salaActual.arriba;
@@ -161,6 +193,10 @@ class Brujula {
         this.salaActual.jugador = true;
     }
 
+
+    /**
+     * Mueve el jugador a la sala de la izquierda, actualizando todo lo necesario
+     */
     moverIzquierda(){
         this.salaActual.jugador = false;
         this.salaActual = this.salaActual.izquierda;
@@ -168,6 +204,10 @@ class Brujula {
         this.salaActual.jugador = true;
     }
 
+
+    /**
+     * Mueve el jugador a la sala de la derecha, actualizando todo lo necesario
+     */
     moverDerecha(){
         this.salaActual.jugador = false;
         this.salaActual = this.salaActual.derecha;
@@ -175,6 +215,9 @@ class Brujula {
         this.salaActual.jugador = true;
     }
 
+    /**
+     * Lleva el jugador a la sala de jefe final
+     */
     irAlBoss(){
         this.salaActual =  new Sala(this.salaActual.jugador, this.salaActual, posicionSala.bossBatle, "Boss.txt",5, this.counterId++);
     }

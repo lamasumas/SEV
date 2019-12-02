@@ -59,6 +59,7 @@ class GameLayer extends Layer {
         {
             if(!this.muerteEffect)
                  reproducirEfecto(efectos.muerte_jugador);
+            cofresAbiertos = [];
             this.menuMuerte.actualizar();
             if(teclas.length > 0 && this.counterMuerte <=0)
             {
