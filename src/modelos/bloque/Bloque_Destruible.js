@@ -1,3 +1,6 @@
+/**
+ * Clase que representa un bloque destruible
+ */
 class Bloque_Destruible extends Bloque {
     constructor(imagen, tiles, x ,y, anchoT, altoT, frames, velocidad) {
         super(imagen,x,y,30);
@@ -9,6 +12,9 @@ class Bloque_Destruible extends Bloque {
         this.animacion;
     }
 
+    /**
+     * Función que actualiza la animacion si ha sido golpeado
+     */
     actualizar() {
         super.actualizar();
         if(this.golpeado)
@@ -17,6 +23,10 @@ class Bloque_Destruible extends Bloque {
         }
     }
 
+    /**
+     * Dibuja el objeto en cada frame, y tiene en ecuenta si hay que animarlo o no
+     * @param scrollX
+     */
     dibujar(scrollX) {
         if(!this.golpeado)
             super.dibujar(scrollX);
@@ -25,6 +35,10 @@ class Bloque_Destruible extends Bloque {
 
     }
 
+    /**
+     * Función que es llamada cuando un ataque golpea el objeto, haciendolo cambiar de estado a golpeado, y comenzar asi
+     * su destrucción
+     */
     loHanGolpeado(){
         if(this.estado == estados.normal) {
             this.golpeado = true;
@@ -32,6 +46,10 @@ class Bloque_Destruible extends Bloque {
             this.estado = estados.muriendo
         }
     }
+
+    /**
+     *Función que se llama cuando acaba la animacion de romperse y lo marca para borrarlo
+     */
     roto(){
         this.estado = estados.finAnimacion;
         this.animacion = this.aVacio

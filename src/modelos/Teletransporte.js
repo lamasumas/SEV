@@ -1,3 +1,6 @@
+/**
+ * Clase que representa un teletransporte
+ */
 class Teletransporte extends Modelo {
 
     constructor(x, y , imagen, posicion) {
@@ -5,6 +8,9 @@ class Teletransporte extends Modelo {
         this.posicion = posicion;
     }
 
+    /**
+     * Actualiza la posicion del jugador en la brujula (controlador del mapa)
+     */
     teleport(){
         switch(this.posicion){
             case posicionSala.abajo:

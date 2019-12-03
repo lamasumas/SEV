@@ -234,6 +234,7 @@ class GameLayer extends Layer {
             if(this.jugador.colisiona(this.teletransportes[i]) && brujula.salaActual.getSala(this.teletransportes[i].posicion) != null)
             {
                 this.teletransportes[i].teleport();
+                //carga el siguiente mapa
                 this.cambiarMapa(this.jugador.dano,this.jugador.flechas, this.jugador.vidas)
                 break;
             }

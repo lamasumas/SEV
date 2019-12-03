@@ -1,11 +1,16 @@
+/**
+ * Clase base de los enemigos, que se usa para crear el Goblin
+ */
 class Enemigo extends Modelo {
 
     constructor(x, y , imagen) {
         super(imagen, x, y);
         this.vxInteligencia = 1;
         this.vx = this.vxInteligencia;
+        //Clasificacion del objeto en wavefront
         this.mapType = "E"
         this.estado = estados.moviendo;
+        //Set de animaciones
         this.aMoverDerecha = new Animacion(imagenes.enemigo_movimiento,
            32, 32, 6, 6);
         this.aMoverIzquierda = new Animacion(imagenes.enemigo_movimiento_izquierda,
@@ -19,18 +24,28 @@ class Enemigo extends Modelo {
 
         // Ref a la animación actual
         this.animacion = this.aMoverDerecha;
+        //Vida del enemigo
         this.vida = 1;
+        //Movimiento
         this.vy = 0;
         this.vx = 0;
+        //Futura referencia al mapa del wavefront
         this.mapa;
         this.invencibilidad = 0;
 
     }
 
+    /**
+     * Callback llamado cuando acaba la animacion de morir, que actualiza el estado
+     */
     finDeAnimacionMorir(){
         this.estado = estados.muerto;
         this.animacion = this.aMuerto;
     }
+
+    /**
+     * Función  que actualiza las animaciones dependiendo de los estados y su direccion
+     */
     actualizar (){
         this.animacion.actualizar();
 
@@ -68,6 +83,11 @@ class Enemigo extends Modelo {
         this.invencibilidad--;
     }
 
+    /**
+     *
+     * Calcula la direccion del siguiente moviemiento teniendo en cuenta donde esta el jugador gracias al mapa (matriz)
+     * del  wavefront
+     */
     calcularDireccion(){
         var tempI = Math.floor(this.y / 32);
         var tempJ = Math.floor(this.x / 32 );
@@ -104,6 +124,10 @@ class Enemigo extends Modelo {
         }
     }
 
+    /**
+     * Dibuja al enemigo en cada frame
+     * @param scrollX
+     */
     dibujar (scrollX){
         scrollX = scrollX || 0;
         this.animacion.dibujar(this.x - scrollX, this.y);

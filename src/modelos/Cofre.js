@@ -1,3 +1,6 @@
+/**
+ * Clase que representa un cofre
+ */
 class Cofre extends Modelo{
     constructor(imagen_cerrado, imagen_abierto, vacio, x, y, genrarEnemigo, generarpowerUp, cofreId){
         super(vacio , x, y);
@@ -10,13 +13,17 @@ class Cofre extends Modelo{
         this.generarEnemigo = genrarEnemigo;
         this.generarPowerup = generarpowerUp
         this.cofreId = cofreId;
+        //Si esta en la lista global de cofres abiertos no se pinte y en el siguiente actualizar del
+        //gamelayer se borrara.
         if( cofresAbiertos.filter(x => x == brujula.salaActual.id +"-"+ this.cofreId).length != 0) {
             this.animacion= this.aVacio;
             this.estado = estados.finAnimacion;
         }
-
     }
 
+    /**
+     * Simplemente actualiza la animación
+     */
     actualizar(){
 
             this.animacion.actualizar();
@@ -25,9 +32,16 @@ class Cofre extends Modelo{
     }
 
 
+    /**
+     * Simplemetne dibuja en cada frame el cofre
+     */
     dibujar(){
         this.animacion.dibujar(this.x - scrollX, this.y)
     }
+
+    /**
+     * Función que escoge que le va a tocar al jugador aleatoriamente
+     */
     generateObject(){
             this.animacion = this.aVacio;
             this.estado = estados.finAnimacion;
@@ -46,6 +60,10 @@ class Cofre extends Modelo{
         }
     }
 
+    /**
+     * Función que llama el trigger asociado a este cofre, añade el cofre a una variable global que contiene una lista
+     * de cofres abiertos, para que no se pueda abusar de abrir el mismo cofre
+     */
     onTrigger(){
 
         if( cofresAbiertos.filter(x => x == (brujula.salaActual.id +"-"+ this.cofreId)).length == 0)

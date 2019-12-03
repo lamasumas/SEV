@@ -1,3 +1,6 @@
+/**
+ * Clase que representa las bonificaciones del juego
+ */
 class PowerUp extends Modelo{
     constructor(opcion,x,y, jugador) {
 
@@ -21,6 +24,10 @@ class PowerUp extends Modelo{
         this.counter = 7;
 
     }
+
+    /**
+     * Función que se llama en cada frame
+     */
     actualizar(){
         if(this.counterStarted)
         {
@@ -32,6 +39,10 @@ class PowerUp extends Modelo{
             this.borrar=true;
         }
     }
+
+    /**
+     * Función que se llama cuando el jugador colisiona con el enemigo
+     */
     colisionado(){
         this.counterStarted = true;
     }
@@ -50,6 +61,11 @@ class PowerUp extends Modelo{
         }
         this.borrar = true;
     }
+
+    /**
+     * Funcioón que dibuja en pantalla el power-up
+     * @param scrollX
+     */
     dibujar (scrollX){
         scrollX = scrollX || 0;
         contexto.drawImage(this.imagen,

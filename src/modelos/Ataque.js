@@ -1,6 +1,8 @@
+/**
+ * Clase que representa un ataque de enemigo o jugador
+ */
 class Ataque extends Modelo {
     constructor(x, y, spreadsheetBasico, spreadsheetFlecha, objetoASeguir, flecha) {
-
         super(imagenes.vacio, objetoASeguir.x + x,  objetoASeguir.y  + y)
         this.sumarX = x;
         this.sumarY = y
@@ -21,11 +23,18 @@ class Ataque extends Modelo {
         this.animacion = this.aAtaqueBasico;
     }
 
+    /**
+     * Función que se llama al final de la animación de ataque basico
+     */
     finAnimacion(){
         this.estado = estados.finAnimacion;
         this.animacion = this.aVacio;
     }
 
+    /**
+     * Función que dibuja en pantalla el ataque
+     * @param scrollX
+     */
     dibujar(scrollX) {
         scrollX = scrollX || 0;
         if(this.flecha)
@@ -36,6 +45,10 @@ class Ataque extends Modelo {
     }
 
 
+    /**
+     * Función que actualiza la posición del atauqe y si es uno basico
+     * la mantiene a la misma distancia del jugador todo el rato
+     */
     actualizar() {
         if (!this.flecha) {
             this.x = this.objetoASeguir.x + this.sumarX;

@@ -27,20 +27,21 @@ entradas.pulsaciones = 1;
 entradas.teclado = 2;
 entradas.gamepad = 3;
 
-var powerup = {}
+var powerup = {};//Referencia a los powerups
 powerup.arco = 0;
 powerup.vida = 1;
 powerup.trampa = 2;
 powerup.dano = 3;
 
-var posicionSala = {};
+var posicionSala = {}; //Referencia a las posibles posiciones de las salas
 posicionSala.derecha = 0;
 posicionSala.izquierda = 1;
 posicionSala.arriba = 2;
 posicionSala.abajo = 3;
 posicionSala.bossBatle = 4;
 
-var brujula = new Brujula();
-var cofresAbiertos = [];
+var brujula = new Brujula(); //Referencia a la brujula que actualiza el mapa
+var cofresAbiertos = []; //Referencia a los cofres que se van abriendo
+var dañoRecogidos =  [] ; //Referencia a las pociones que se van recogiendo
 
 var entrada = entradas.pulsaciones;

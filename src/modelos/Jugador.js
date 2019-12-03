@@ -1,17 +1,25 @@
+/**
+ * Clase que representa el jugador controlado por el usuario
+ */
 class Jugador extends Modelo {
 
     constructor(x, y, generarAtaqueCallback) {
         super(imagenes.jugador , x, y)
+        //la vida
         this.vidas = 3;
         this.tiempoInvulnerable = 0;
         this.mapType = "P";
+        //El mapa del waveframe
         this.mapa;
+        //El daño inflingido
         this.dano = 1;
         this.ataqueCallback = generarAtaqueCallback;
+        //El delay en el ataque
         this.counterAtaque = 0;
         this.estado = estados.moviendo;
+        //La cantidad de flechas a lanzar
         this.flechas = 0;
-        this.vidas = 3;
+
         this.invencibilidad = 0;
 
         this.orientacion = orientaciones.derecha;
@@ -34,9 +42,10 @@ class Jugador extends Modelo {
         this.animacion = this.aIdleDerecha;
     }
 
+    /**
+     * Función que actualiza la posicion, animacion y orientación del pesonaje
+     */
     actualizar(){
-
-
 
         this.animacion.actualizar();
 
@@ -94,19 +103,28 @@ class Jugador extends Modelo {
 
     }
 
+    /**
+     * Función que mueve el personaje en el eje x
+     * @param direccion, int direcion
+     */
     moverX (direccion){
             this.vx = direccion * 3;
 
     }
 
+    /**
+     * Función que mueve el jugador en el eje y
+     * @param direccion, int la direccion a moverse
+     */
     moverY (direccion){
         this.vy = direccion * 3;
     }
 
 
-
-
-
+    /**
+     * Dibuja cada frame al jugador, y se modificara el alfa si el jugador es golpeado
+     * @param scrollX
+     */
     dibujar (scrollX){
         scrollX = scrollX || 0;
         if(this.invencibilidad > 0)
@@ -118,10 +136,14 @@ class Jugador extends Modelo {
     }
 
 
+    /**
+     * Funcion que lee si los controles han sido pulsados, y actualiza el personaje (posicion o ataque).
+     */
     actualizarPosicion(){
 
+        //Selector de si hay que lanzar flechas no
         var lanzarFlecha = (this.flechas > 0)? true:false;
-        // Eje X
+        // Moverse por el eje X
         if (controles.moverX > 0 &&  (this.x - gameLayer.scrollX) - this.ancho/2 < 450) {
             this.moverX(1);
 
@@ -132,7 +154,7 @@ class Jugador extends Modelo {
             this.moverX(0);
         }
 
-        // Eje Y
+        // Moverse por el eje Y
         if (controles.moverY > 0 && (this.y - gameLayer.scrollY) + this.alto/2 > 35) {
             this.moverY(-1);
 
@@ -144,6 +166,7 @@ class Jugador extends Modelo {
         }
 
 
+        //Si el delay ya se acabo, comprobar y ejenerar ataque si hay que hacerlo
         if (this.counterAtaque <= 0) {
             //Ataques
 

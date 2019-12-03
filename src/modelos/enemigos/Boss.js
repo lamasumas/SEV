@@ -1,8 +1,12 @@
+/**
+ * Clase que representa al jefe final de la demo tecnica
+ */
 class Boss extends Enemigo{
 
     constructor(x,y, imagen, derecha_izquierda)
     {
         super(x,y, imagen);
+        //set de animaciones
         this.aMoverDerecha = new Animacion(imagenes.boss_idle,60,60,1,4);
         this.aMoverIzquierda = new Animacion(imagenes.boss_idle_izquierda,60,60,1,4);
         this.aAtaqueEmpujon = new Animacion(imagenes.boss_basico, 60, 60, 10 ,5)
@@ -10,15 +14,25 @@ class Boss extends Enemigo{
         this.animacion = this.aMoverDerecha;
         this.aMorirIzquierda =  new Animacion(imagenes.boss_muerte_izquierda,60,60,4,4, this.finDeAnimacionMorir.bind(this));
         this.aMorirDerecha =  new Animacion(imagenes.boss_muerte,60,60,4,4, this.finDeAnimacionMorir.bind(this));
+        //Vida total del boss
         this.vida = 10;
         this.derecha_izquierda = derecha_izquierda;
+        //Temnporizador para que el enemigo no abuse del empujon
         this.counterEmpujon= 30;
+        //Distancia del empujon
         this.empujonDistancia= 0;
         this.guardadaX = 0;
         this.copia;
     }
+
+    /**
+     * Función que se llama en cada frame, actualiza el estado del enemigo a si tiene que realizar un empujon, esta muriendo
+     * o esta estatico recargando energia despues de un empujón
+     * @param jugador
+     */
     actualizar(jugador){
 
+        //Comprobación de si tiene que realizar un empujon
         if(this.counterEmpujon <= 0 && this.estado == estados.moviendo)
         {
             this.estado = estados.empujando;
@@ -30,16 +44,23 @@ class Boss extends Enemigo{
 
         }
 
+        //Mirar que accion deberia realizar
         this.accion(jugador);
 
+        //Si no esta muerto que actualize la animación
         if(this.estado != estados.muerto)
             this.animacion.actualizar();
-        this.counterEmpujon--;
 
+        this.counterEmpujon--;
         this.invencibilidad--;
 
     }
 
+    /**
+     * Función que realiza la acción correspondiente del boss (actualiza animaciones,
+     * estados, counters, direcciones)
+     * @param jugador
+     */
     accion(jugador){
         this.vx = 0;
         this.vy = 0;
@@ -83,6 +104,10 @@ class Boss extends Enemigo{
         }
     }
 
+    /**
+     * Calcula la direccion que debe de tomar para llegar a una posicion guardada del jugador (la que
+     * tenia al comenzar el empujon, que no actualiza, para que el jugador pueda huir)
+     */
     calcularDireccion() {
         var tempI = Math.floor(this.y / 32);
         var tempJ = Math.floor(this.x / 32 );
@@ -132,6 +157,9 @@ class Boss extends Enemigo{
         }
     }
 
+    /**
+     * Callabck utilizado cuando el jugador gana la partida.
+     */
     finDeAnimacionMorir() {
         this.estado = estados.victoria;
         this.animacion.frameActual = 3;
