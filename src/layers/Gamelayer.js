@@ -40,6 +40,7 @@ class GameLayer extends Layer {
         this.ajustarPosicionEntrada();
         this.counterMuerte= 10;
         this.cofreIdGenerator = 1;
+        this.powerUpIdGenerator = 1;
         reproducirMusica();
         this.muerteEffect = false;
         this.victoriaEffecto = false;
@@ -417,7 +418,8 @@ class GameLayer extends Layer {
                 this.cofreIdGenerator++;
                 break;
             case "P":
-                var elPowerup = new PowerUp(powerup.dano, x +12, y+12, this.jugador);
+                var elPowerup = new PowerUp(powerup.dano, x +12, y+12, this.jugador, this.powerUpIdGenerator);
+                this.powerUpIdGenerator++;
                 this.powerups.push(elPowerup);
                 break;
             case "S":

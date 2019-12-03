@@ -2,7 +2,7 @@
  * Clase que representa las bonificaciones del juego
  */
 class PowerUp extends Modelo{
-    constructor(opcion,x,y, jugador) {
+    constructor(opcion,x,y, jugador, powerupId) {
 
         var imagen;
         switch (opcion){
@@ -21,7 +21,11 @@ class PowerUp extends Modelo{
         this.opcion = opcion;
         this.borrar = false;
         this.counterStarted = false;
+        this.powerupId = powerupId;
         this.counter = 7;
+        if( dañoRecogidos.filter(x => x == brujula.salaActual.id +"-p"+ this.powerupId).length != 0) {
+            this.borrar = true;
+        }
 
     }
 
@@ -57,6 +61,7 @@ class PowerUp extends Modelo{
                 break;
             case powerup.dano:
                 jugador.dano++;
+                dañoRecogidos.push(brujula.salaActual.id+ "-p"+this.powerupId)
                 break;
         }
         this.borrar = true;
@@ -67,11 +72,12 @@ class PowerUp extends Modelo{
      * @param scrollX
      */
     dibujar (scrollX){
-        scrollX = scrollX || 0;
-        contexto.drawImage(this.imagen,
-            this.x - this.imagen.width/2 - scrollX,
-            this.y - this.imagen.height/2,20,20);
-
+        if(!this.borrar) {
+            scrollX = scrollX || 0;
+            contexto.drawImage(this.imagen,
+                this.x - this.imagen.width / 2 - scrollX,
+                this.y - this.imagen.height / 2, 20, 20);
+        }
     }
 
 
